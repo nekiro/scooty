@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "strict": true,
+    "strictNullChecks": true,
+    "declaration": true
+  },
+  "extends": "expo/tsconfig.base",
+  "exclude": ["node_modules"]
+}
