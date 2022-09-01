@@ -32,7 +32,7 @@ const useLocation = (watchLocation = false) => {
       longitude,
     });
 
-    if (!response || response.length == 0) {
+    if (!response || response.length === 0) {
       return;
     }
 
@@ -56,7 +56,7 @@ const useLocation = (watchLocation = false) => {
 
   useEffect(() => {
     let subscription: LocationSubscription;
-    (async () => {
+    void (async () => {
       try {
         const { status } = await requestForegroundPermissionsAsync();
         if (status !== 'granted') {
@@ -64,8 +64,9 @@ const useLocation = (watchLocation = false) => {
         }
 
         if (watchLocation) {
-          subscription = await watchPositionAsync({}, (location) =>
-            updateLocation(location),
+          subscription = await watchPositionAsync(
+            {},
+            async (location) => await updateLocation(location),
           );
         } else {
           await updateLocation(await getCurrentPositionAsync());

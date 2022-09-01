@@ -14,14 +14,9 @@ type BrandLogoProps = {
   style?: StyleProp<ViewStyle>;
 };
 
-const BrandLogo = ({
-  type,
-  width = '100%',
-  height = '100%',
-  style,
-}: BrandLogoProps) => {
+const BrandLogo = ({ type, width, height, style }: BrandLogoProps) => {
   const Component = typeToImage[type];
-  return <Component width={width} height={height} style={[style]} />;
+  return <Component width={width} height={height} style={style} />;
 };
 
 export default BrandLogo;

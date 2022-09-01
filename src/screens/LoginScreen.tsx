@@ -20,7 +20,7 @@ const LoginScreen = ({
   };
 
   const onLoginPress = () => {
-    //
+    navigation.navigate('Home');
   };
 
   return (
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   signUpActionText: {
-    color: 'yellow',
+    color: colors.yellow,
     fontFamily: 'CeraProBold',
   },
   signUpText: {
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   helpCenterText: {
-    color: 'gray',
+    color: colors.lightGray,
     marginBottom: 10,
   },
   formView: {

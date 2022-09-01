@@ -11,7 +11,7 @@ const colors: ColorScheme = {
   black: '#000000',
   white: '#FFFFFF',
   gray: '#2F2F2F',
-  lightGray: '#454545',
+  lightGray: '#646363',
 };
 
 export default colors;

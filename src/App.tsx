@@ -7,6 +7,7 @@ import { fonts } from './assets';
 
 import OnboardingScreen from './screens/OnboardingScreen';
 import LoginScreen from './screens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -28,9 +29,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <SafeAreaProvider>
-        <Stack.Navigator screenOptions={screenOptions} initialRouteName="Login">
+        <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
         </Stack.Navigator>
       </SafeAreaProvider>
     </NavigationContainer>

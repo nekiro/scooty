@@ -13,6 +13,7 @@ import CountryPicker, {
   DARK_THEME,
 } from 'react-native-country-picker-modal';
 import useLocation from '../hooks/useLocation';
+import colors from '../lib/colorScheme';
 
 type PhoneNumberInputProps = {
   style?: StyleProp<TextStyle>;
@@ -85,7 +86,7 @@ const PhoneNumberInput = ({ style }: PhoneNumberInputProps) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     borderRadius: 5,
     padding: 15,
     height: 50,
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
   },
   countryCodeText: {
     fontFamily: 'CeraProBold',
-    color: 'lightgray',
+    color: colors.lightGray,
     fontSize: 17,
   },
 });

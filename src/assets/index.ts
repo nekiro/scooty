@@ -1,5 +1,8 @@
 export const images = {
   onboardingBackground: require('./onboarding-bg.png'),
+  filtersIcon: require('./filters-icon.png'),
+  menuIcon: require('./menu-icon.png'),
+  mapMarker: require('./map-marker.png'),
 };
 
 export const fonts = {
