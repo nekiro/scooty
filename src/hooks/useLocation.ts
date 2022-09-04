@@ -6,9 +6,11 @@ import {
   watchPositionAsync,
   LocationSubscription,
   LocationObject,
+  Accuracy,
 } from 'expo-location';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import { CountryCode } from 'react-native-country-picker-modal';
+import { isAndroid } from '../lib';
 
 export type Location = {
   latitude: number;
@@ -21,12 +23,28 @@ export type Location = {
   street: { name: string | null; number: number | null };
 };
 
-const useLocation = (watchLocation = false) => {
-  const [location, setLocation] = useState<Location | null>(null);
-  const phoneUtil = useMemo(() => PhoneNumberUtil.getInstance(), [location]);
+type UseLocationProps = {
+  watchLocation?: boolean;
+  onUpdateLocation?: (location: Location | null) => void;
+};
 
-  const updateLocation = async (location: LocationObject) => {
-    const { latitude, longitude } = location.coords;
+const useLocation = ({
+  watchLocation = false,
+  onUpdateLocation,
+}: UseLocationProps = {}) => {
+  const [location, setLocation] = useState<Location | null>();
+  const [locationSubscription, setLocationSubscription] =
+    useState<LocationSubscription | null>(null);
+  const phoneUtil = useMemo(() => PhoneNumberUtil.getInstance(), []);
+
+  const updateLocation = async (rawLocation?: LocationObject) => {
+    if (!rawLocation) {
+      rawLocation = await getCurrentPositionAsync({
+        accuracy: isAndroid ? Accuracy.Low : Accuracy.Lowest,
+      });
+    }
+
+    const { latitude, longitude } = rawLocation.coords;
     const response = await reverseGeocodeAsync({
       latitude,
       longitude,
@@ -39,7 +57,7 @@ const useLocation = (watchLocation = false) => {
     const { isoCountryCode, city, country, postalCode, street, streetNumber } =
       response[0];
 
-    setLocation({
+    const formattedLocation = {
       latitude,
       longitude,
       callingCode: phoneUtil.getCountryCodeForRegion(isoCountryCode as string),
@@ -51,11 +69,15 @@ const useLocation = (watchLocation = false) => {
         name: street,
         number: parseInt(streetNumber as string),
       },
-    });
+    };
+
+    setLocation(formattedLocation);
+
+    // callback
+    onUpdateLocation?.(formattedLocation);
   };
 
   useEffect(() => {
-    let subscription: LocationSubscription;
     void (async () => {
       try {
         const { status } = await requestForegroundPermissionsAsync();
@@ -64,9 +86,11 @@ const useLocation = (watchLocation = false) => {
         }
 
         if (watchLocation) {
-          subscription = await watchPositionAsync(
-            {},
-            async (location) => await updateLocation(location),
+          setLocationSubscription(
+            await watchPositionAsync(
+              {},
+              async (location) => await updateLocation(location),
+            ),
           );
         } else {
           await updateLocation(await getCurrentPositionAsync());
@@ -76,10 +100,10 @@ const useLocation = (watchLocation = false) => {
       }
     })();
 
-    return () => subscription.remove();
+    return () => locationSubscription?.remove();
   }, []);
 
-  return location;
+  return { location, updateLocation };
 };
 
 export default useLocation;

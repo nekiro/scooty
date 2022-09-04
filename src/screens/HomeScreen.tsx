@@ -1,15 +1,23 @@
+import React, { useMemo, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import MapView, { LatLng, MapEvent } from 'react-native-maps';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import MapView, { Region } from 'react-native-maps';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-import BrandLogo from '../components/BrandLogo';
 import BackgroundGradient from '../components/BackgroundGradient';
-import BarIcon from '../components/BarIcon';
-import { images } from '../assets';
-import useLocation from '../hooks/useLocation';
+import { icons, images, logo } from '../assets';
+import useLocation, { Location } from '../hooks/useLocation';
 import MapMarker from '../components/MapMarker';
+import StartRidingButton from '../components/StartRidingButton';
+import PressableIcon from '../components/PressableIcon';
+import MenuModal from './modals/MenuModal';
+import FiltersModal from './modals/FiltersModal';
+import { useModal } from '../hooks/useModal';
+import ScooterModal from './modals/ScooterModal';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { getRegion } from '../lib';
+import SplashScreen from './SplashScreen';
+import Image from '../components/Image';
 
 const markersData: any[] = [
   {
@@ -33,17 +41,41 @@ const markersData: any[] = [
 const HomeScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
-  const location = useLocation(true);
+  const { location } = useLocation({ onUpdateLocation });
+  const { show, setContent } = useModal();
+  const mapRef = useRef<MapView>(null);
+
+  const MenuModalComponent = useMemo(() => <MenuModal />, []);
+  const FilterModalComponent = useMemo(() => <FiltersModal />, []);
+  const ScooterModalComponent = useMemo(() => <ScooterModal />, []);
+
+  const animateToRegion = (region: Region, duration: number = 600) =>
+    mapRef.current?.animateToRegion(region, duration);
+
+  function onUpdateLocation(location: Location | null) {
+    location && animateToRegion(getRegion(location), 1000);
+  }
 
   const showFilters = () => {
-    //
+    setContent(FilterModalComponent);
+    show();
   };
 
   const showMenu = () => {
-    //
+    setContent(MenuModalComponent);
+    show();
   };
 
-  console.log(location);
+  const onArrowPress = () => location && animateToRegion(getRegion(location));
+
+  const onRideButtonPress = () => {
+    setContent(ScooterModalComponent);
+    show();
+  };
+
+  if (!location) {
+    return <SplashScreen />;
+  }
 
   return (
     <>
@@ -52,39 +84,30 @@ const HomeScreen = ({
         <SafeAreaView
           style={styles.mainContainer}
           edges={['right', 'top', 'left']}
-          mode="padding"
         >
           <View style={styles.bar}>
-            <BarIcon
-              source={images.menuIcon}
+            <PressableIcon
+              source={icons.hamburger}
               iconStyle={styles.menuIcon}
               onPress={showMenu}
             />
-            <BrandLogo
-              type="light"
-              height="60"
-              width="150"
+            <Image
+              source={logo.light}
+              height={60}
+              width={150}
               style={styles.logo}
             />
-            <BarIcon
-              source={images.filtersIcon}
+            <PressableIcon
+              source={icons.filters}
               iconStyle={styles.filterIcon}
               onPress={showFilters}
             />
           </View>
           <MapView
+            ref={mapRef}
             showsUserLocation={true}
             style={styles.map}
-            region={
-              location
-                ? {
-                    latitude: location?.latitude,
-                    longitude: location?.longitude,
-                    latitudeDelta: 0.01,
-                    longitudeDelta: 0.01,
-                  }
-                : undefined
-            }
+            // onMapLoaded={() => console.log('map loaded')}
           >
             {location &&
               markersData.map((marker) => (
@@ -96,6 +119,25 @@ const HomeScreen = ({
                 />
               ))}
           </MapView>
+          <BackgroundGradient
+            pointerEvents="none"
+            style={styles.buttonsGradient}
+            colors={['transparent', '#191A1A']}
+            locations={[0.2, 1]}
+          />
+          <View style={styles.buttonsContainer}>
+            <PressableIcon
+              style={styles.arrow}
+              source={images.arrowWithBg}
+              width={50}
+              height={50}
+              onPress={onArrowPress}
+            />
+            <StartRidingButton
+              style={styles.rideButton}
+              onPress={onRideButtonPress}
+            />
+          </View>
         </SafeAreaView>
       </BackgroundGradient>
     </>
@@ -105,7 +147,34 @@ const HomeScreen = ({
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    paddingBottom: 0,
+  },
+  arrow: {
+    alignSelf: 'flex-end',
+    justifyContent: 'flex-start',
+  },
+  buttonsGradient: {
+    zIndex: 0,
+    elevation: 0,
+    position: 'absolute',
+    bottom: 0,
+    height: '40%',
+    width: '100%',
+  },
+  buttonsContainer: {
+    zIndex: 1,
+    elevation: 1,
+    position: 'absolute',
+    bottom: 0,
+    height: '20%',
+    width: '85 %',
+    alignSelf: 'center',
+  },
+  rideButton: {
+    alignSelf: 'center',
+    bottom: 45,
+    zIndex: 1,
+    elevation: 1,
+    width: '100%',
   },
   menuIcon: {
     alignSelf: 'flex-start',

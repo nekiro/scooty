@@ -8,12 +8,12 @@ import {
   TextInputProps,
 } from 'react-native';
 
-interface BaseTextInputProps {
+type BaseTextInputProps = {
   keyboardType?: KeyboardTypeOptions;
   style?: StyleProp<TextStyle>;
   placeholder?: string;
   children?: JSX.Element | JSX.Element[];
-}
+} & Partial<TextInputProps>;
 
 const BaseTextInput = ({
   style,
@@ -21,7 +21,7 @@ const BaseTextInput = ({
   placeholder,
   children,
   ...props
-}: BaseTextInputProps & TextInputProps) => {
+}: BaseTextInputProps) => {
   return (
     <TextInput
       style={[styles.input, style]}

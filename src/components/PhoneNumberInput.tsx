@@ -21,7 +21,7 @@ type PhoneNumberInputProps = {
 
 const PhoneNumberInput = ({ style }: PhoneNumberInputProps) => {
   const [pickerVisible, setPickerVisible] = useState(false);
-  const location = useLocation();
+  const { location } = useLocation();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [country, setCountry] = useState<{
     callingCode: string;

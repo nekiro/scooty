@@ -1,11 +1,14 @@
-import { Image, StyleSheet, ImageSourcePropType } from 'react-native';
+import { StyleSheet } from 'react-native';
+import Image from './Image';
 import { MapEvent, Marker } from 'react-native-maps';
 import { Location } from '../hooks/useLocation';
 import { images } from '../assets';
+import React from 'react';
+import { SvgProps } from 'react-native-svg';
 
 type MapMarkerProps = {
   location: Location;
-  source?: ImageSourcePropType;
+  source?: number | number | React.FC<SvgProps>;
   onPress?: (
     event: MapEvent<{
       action: 'marker-press';
@@ -17,7 +20,6 @@ type MapMarkerProps = {
 const MapMarker = ({ location, source, onPress }: MapMarkerProps) => {
   return (
     <Marker
-      zIndex={1}
       coordinate={{
         latitude: location.latitude,
         longitude: location.longitude,
@@ -25,15 +27,20 @@ const MapMarker = ({ location, source, onPress }: MapMarkerProps) => {
       tracksViewChanges={false}
       onPress={onPress}
     >
-      <Image source={source ?? images.mapMarker} style={styles.markerImage} />
+      <Image
+        source={source ?? images.mapMarker}
+        style={styles.markerImage}
+        width={styles.markerImage.width}
+        height={styles.markerImage.height}
+      />
     </Marker>
   );
 };
 
 const styles = StyleSheet.create({
   markerImage: {
-    height: 80,
-    width: 80,
+    height: 50,
+    width: 50,
   },
 });
 

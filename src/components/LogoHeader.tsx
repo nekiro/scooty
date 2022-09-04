@@ -1,6 +1,7 @@
 import { Text, StyleSheet, View, ViewStyle, StyleProp } from 'react-native';
+import { logo } from '../assets';
 import colors from '../lib/colorScheme';
-import BrandLogo from './BrandLogo';
+import Image from './Image';
 
 type LogoHeaderProps = {
   children: string;
@@ -10,7 +11,7 @@ type LogoHeaderProps = {
 const LogoHeader = ({ children, style }: LogoHeaderProps) => {
   return (
     <View style={[styles.container, style]}>
-      <BrandLogo type="light" style={styles.logo} height={styles.logo.height} />
+      <Image source={logo.light} style={styles.logo} height={50} width={200} />
       <Text style={styles.text}>{children}</Text>
     </View>
   );
@@ -22,7 +23,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    height: 50,
     marginBottom: 10,
   },
   text: {

@@ -1,12 +1,12 @@
 import { StyleSheet, Text, ImageBackground } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import colors from '../lib/colorScheme';
-import BrandLogo from '../components/BrandLogo';
 import VariantButton from '../components/VariantButton';
 import BackgroundGradient from '../components/BackgroundGradient';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-import { images } from '../assets';
+import { images, logo } from '../assets';
+import Image from '../components/Image';
 
 const OnboardingScreen = ({
   navigation,
@@ -35,7 +35,12 @@ const OnboardingScreen = ({
           <Text style={styles.text}>
             Get the freedom of transportation with
           </Text>
-          <BrandLogo type="light" width="50%" height={25} style={styles.logo} />
+          <Image
+            source={logo.light}
+            width="50%"
+            height={25}
+            style={styles.logo}
+          />
           <VariantButton onPress={onLoginPress} variant="solid">
             Log In
           </VariantButton>

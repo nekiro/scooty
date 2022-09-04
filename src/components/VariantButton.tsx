@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -5,14 +6,16 @@ import {
   Text,
   ViewStyle,
   StyleProp,
+  PressableStateCallbackType,
 } from 'react-native';
 import colors from '../lib/colorScheme';
 
 type VariantButtonProps = {
   variant: 'solid' | 'outlined';
   onPress?: (event: GestureResponderEvent) => void;
-  children?: string;
+  children?: string | JSX.Element;
   style?: StyleProp<ViewStyle>;
+  glow?: boolean;
 };
 
 const VariantButton = ({
@@ -20,12 +23,32 @@ const VariantButton = ({
   onPress,
   children,
   style,
+  glow = false,
 }: VariantButtonProps) => {
+  const getStyle = useCallback(
+    (state: PressableStateCallbackType) => {
+      return [
+        styles.base,
+        // state.pressed
+        //   ? { ...styles[variant], backgroundColor: colors.darkYellow }
+        //   : styles[variant],
+        styles[variant],
+        style,
+        glow ? styles.glow : undefined,
+      ];
+    },
+    [style],
+  );
+
   return (
-    <Pressable style={[styles.base, styles[variant], style]} onPress={onPress}>
-      <Text style={[styles.baseText, styles[`${variant}Text`]]}>
-        {children}
-      </Text>
+    <Pressable style={getStyle} onPress={onPress}>
+      {typeof children === 'string' ? (
+        <Text style={[styles.baseText, styles[`${variant}Text`]]}>
+          {children}
+        </Text>
+      ) : (
+        children
+      )}
     </Pressable>
   );
 };
@@ -55,6 +78,12 @@ const styles = StyleSheet.create({
   },
   outlinedText: {
     color: colors.yellow,
+  },
+  glow: {
+    shadowColor: '#eef511',
+    shadowOffset: { height: 0, width: 7 },
+    shadowRadius: 33,
+    shadowOpacity: 0.3,
   },
 });
 
