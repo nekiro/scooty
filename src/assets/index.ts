@@ -4,8 +4,9 @@ import mapMarker from './map-marker.svg';
 import arrowWithBg from './arrow-with-bg.svg';
 import splashBg from './splash.png';
 import bigLetterS from './big-s.svg';
-import LogoDark from './logo-dark.svg';
-import LogoLight from './logo-light.svg';
+import logoDark from './logo-dark.svg';
+import logoLight from './logo-light.svg';
+import rightArrow from './right-arrow.svg';
 
 import arrow from './icons/arrow.svg';
 import hamburger from './icons/hamburger.svg';
@@ -18,8 +19,8 @@ import exitDoor from './icons/exit-door.svg';
 import goArrow from './icons/go-arrow.svg';
 
 export const logo = {
-  light: LogoLight,
-  dark: LogoDark,
+  light: logoLight,
+  dark: logoDark,
 };
 
 export const images = {
@@ -29,6 +30,7 @@ export const images = {
   arrowWithBg,
   splashBg,
   bigLetterS,
+  rightArrow,
 };
 
 export const icons = {

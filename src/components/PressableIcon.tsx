@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import Icon, { IconProps } from './Icon';
 
-export type PressableIconProps = IconProps & {
+export type PressableIconProps = {
   iconStyle?: StyleProp<ImageStyle>;
   onPress?: (event: GestureResponderEvent) => void;
 };
@@ -20,7 +20,7 @@ const PressableIcon = ({
   width,
   height,
   onPress,
-}: PressableIconProps) => (
+}: PressableIconProps & IconProps) => (
   <Pressable style={[styles.container, style]} onPress={onPress}>
     <Icon
       source={source}

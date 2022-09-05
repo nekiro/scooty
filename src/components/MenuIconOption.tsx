@@ -14,14 +14,14 @@ type MenuIconOptionPros = {
   children: string;
   iconSource: IconSource;
   onPress?: (event: GestureResponderEvent) => void;
-} & ViewProps;
+};
 
 const MenuIconOption = ({
   children,
   iconSource,
   style,
   onPress,
-}: MenuIconOptionPros) => {
+}: MenuIconOptionPros & ViewProps) => {
   const BaseComponent = () => (
     <View style={[styles.container, style]}>
       <Icon height={40} width={40} source={iconSource} />

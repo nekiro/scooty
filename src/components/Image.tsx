@@ -9,9 +9,14 @@ type ImageProps = {
   source: number | React.FC<SvgProps>;
   width?: number | string;
   height?: number | string;
-} & Partial<Omit<ReactNativeImageProps, 'source'>>;
+};
 
-const Image = ({ style, source, width, height }: ImageProps) => {
+const Image = ({
+  style,
+  source,
+  width,
+  height,
+}: ImageProps & Partial<Omit<ReactNativeImageProps, 'source'>>) => {
   if (typeof source === 'number') {
     // require for images returns numbers
     return <ReactNativeImage source={source} style={style} />;

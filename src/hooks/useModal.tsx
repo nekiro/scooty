@@ -4,9 +4,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import ReactModal from 'react-native-modal';
-import { StyleSheet, View } from 'react-native';
-import BackgroundGradient from '../components/BackgroundGradient';
+import Modal from '../components/Modal';
 
 export type ModalContext = {
   show: () => void;
@@ -44,48 +42,14 @@ export const ModalContextProvider = ({ children }: PropsWithChildren) => {
       value={{ show, hide, toggle, isVisible, setContent, hasContent }}
     >
       {content && (
-        <ReactModal
-          isVisible={visible}
-          onBackdropPress={hide}
-          onBackButtonPress={hide}
-          onSwipeComplete={hide}
-          animationIn="slideInUp"
-          animationInTiming={600}
-          animationOut="slideOutDown"
-          animationOutTiming={600}
-          swipeDirection="down"
-          style={styles.modal}
-          backdropOpacity={0}
-        >
-          <BackgroundGradient style={styles.gradient}>
-            <View pointerEvents="none" style={styles.modalLine} />
-            {content}
-          </BackgroundGradient>
-        </ReactModal>
+        <Modal preset="bottom" isVisible={visible} onHide={hide}>
+          {content}
+        </Modal>
       )}
       {children}
     </context.Provider>
   );
 };
-
-const styles = StyleSheet.create({
-  modal: { margin: 0, justifyContent: 'flex-end' },
-  gradient: {
-    flex: 0,
-    paddingTop: 10,
-    paddingBottom: 40,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-  },
-  modalLine: {
-    backgroundColor: '#F3F3F3',
-    width: 50,
-    height: 3,
-    borderRadius: 49,
-    alignSelf: 'center',
-    marginBottom: 20,
-  },
-});
 
 export const useModal = (): ModalContext => {
   return useContext(context);

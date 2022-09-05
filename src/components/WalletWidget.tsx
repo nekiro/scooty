@@ -15,7 +15,7 @@ type WalletWidgetProps = {
   name: string;
   money: string;
   onPress?: (event: GestureResponderEvent) => void;
-} & ViewProps;
+};
 
 const WalletLogo = () => (
   <View style={styles.walletLogoContainer}>
@@ -24,7 +24,12 @@ const WalletLogo = () => (
   </View>
 );
 
-const WalletWidget = ({ name, money, style, onPress }: WalletWidgetProps) => (
+const WalletWidget = ({
+  name,
+  money,
+  style,
+  onPress,
+}: WalletWidgetProps & ViewProps) => (
   <Pressable onPress={onPress}>
     <View style={[styles.container, style]}>
       <Image source={images.bigLetterS} style={styles.letter}></Image>

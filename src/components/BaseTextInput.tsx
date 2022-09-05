@@ -13,7 +13,7 @@ type BaseTextInputProps = {
   style?: StyleProp<TextStyle>;
   placeholder?: string;
   children?: JSX.Element | JSX.Element[] | string;
-} & Partial<TextInputProps>;
+};
 
 const BaseTextInput = ({
   style,
@@ -21,7 +21,7 @@ const BaseTextInput = ({
   placeholder,
   children,
   ...props
-}: BaseTextInputProps) => {
+}: BaseTextInputProps & Partial<TextInputProps>) => {
   return (
     <TextInput
       style={[styles.input, style]}

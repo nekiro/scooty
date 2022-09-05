@@ -1,73 +1,107 @@
-import { useMemo, useState } from 'react';
-import { StyleSheet, StyleProp, TextStyle, Pressable } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { StyleSheet, StyleProp, TextStyle, View } from 'react-native';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
 import colors from '../lib/colorScheme';
-import ReactModal from 'react-native-modal';
-import BackgroundGradient from './BackgroundGradient';
+import Modal from './Modal';
 import BaseTextInput from './BaseTextInput';
+import Image from './Image';
+import { images } from '../assets';
 
 type DateInputProps = {
   style?: StyleProp<TextStyle>;
 };
 
+const maximumDate = new Date(new Date().getFullYear() - 16, 0, 1);
+
 const DateInput = ({ style }: DateInputProps) => {
-  const [show, setShow] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [date, setDate] = useState<Date | undefined>();
+  const [lastAction, setLastAction] = useState<Date | undefined>();
+  const [intervalRef, setIntervalRef] = useState<NodeJS.Timer | undefined>();
 
-  const onChange = (event: DateTimePickerEvent, date?: Date) =>
+  const actionRef = useRef(lastAction);
+  actionRef.current = lastAction;
+
+  const periodicallyCheckForActions = (lastAction: Date | undefined) => {
+    if (!visible) {
+      return;
+    }
+
+    if (!lastAction) {
+      return;
+    }
+
+    if (new Date().getTime() - lastAction.getTime() > 2000) {
+      hide();
+    }
+  };
+
+  const onChange = (event: DateTimePickerEvent, date?: Date) => {
     setDate(date as Date);
-  const maximumDate = useMemo(
-    () => new Date(new Date().getFullYear() - 16, 0, 1),
-    [],
-  );
+    setLastAction(new Date());
 
-  const hide = () => setShow(false);
+    console.log('on change date', date);
+    if (!intervalRef) {
+      setIntervalRef(
+        setInterval(() => periodicallyCheckForActions(actionRef.current), 500),
+      );
+    }
+  };
 
-  // TODO: in case of spinner, onChange event fires instantly, so its impossible to set correct date
-  // implement code that waits x (5) seconds before actually firing onChange
+  const show = () => setVisible(true);
+  const hide = () => {
+    clearInterval(intervalRef);
+    setVisible(false);
+  };
+
+  useEffect(() => {
+    return () => clearInterval(intervalRef);
+  }, []);
 
   return (
     <>
-      <BaseTextInput
-        onPressIn={() => setShow(true)}
-        editable={false}
-        style={[styles.container, style]}
-      >
-        {date?.toLocaleDateString().replace(/-/g, '/')}
-      </BaseTextInput>
+      <View style={[styles.container, style]}>
+        <BaseTextInput onPressIn={show} editable={false} style={styles.input}>
+          {date?.toLocaleDateString().replace(/-/g, ' / ')}
+        </BaseTextInput>
+        <Image
+          source={images.rightArrow}
+          height={16}
+          width={10}
+          style={styles.arrow}
+        ></Image>
+      </View>
 
-      <ReactModal
-        isVisible={show}
-        onBackdropPress={hide}
-        onBackButtonPress={hide}
-        animationIn="slideInUp"
-        animationInTiming={500}
-        animationOut="slideOutDown"
-        animationOutTiming={500}
-      >
-        <BackgroundGradient style={styles.gradient}>
-          <DateTimePicker
-            value={date ?? new Date()}
-            accentColor={colors.yellow}
-            display="inline"
-            onChange={onChange}
-            maximumDate={maximumDate}
-          />
-        </BackgroundGradient>
-      </ReactModal>
+      <Modal preset="center" isVisible={visible}>
+        <DateTimePicker
+          value={date ?? new Date()}
+          accentColor={colors.yellow}
+          display="inline"
+          onChange={onChange}
+          maximumDate={maximumDate}
+        />
+      </Modal>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flexDirection: 'row',
+  },
+  input: { width: '100%' },
   gradient: {
     flex: 0,
     borderColor: colors.yellow,
     borderWidth: 1,
     padding: 10,
+  },
+  arrow: {
+    position: 'absolute',
+    right: 20,
+    alignSelf: 'center',
   },
 });
 

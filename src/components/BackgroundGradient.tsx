@@ -5,7 +5,7 @@ type BackgroundGradientProps = {
   style?: StyleProp<ViewStyle>;
   colors?: string[];
   locations?: number[];
-} & Omit<LinearGradientProps, 'colors'>;
+};
 
 const BackgroundGradient = ({
   children,
@@ -13,7 +13,7 @@ const BackgroundGradient = ({
   colors = ['#191A1A', '#181818'],
   locations = [0, 0.8],
   ...props
-}: BackgroundGradientProps) => {
+}: BackgroundGradientProps & Omit<LinearGradientProps, 'colors'>) => {
   return (
     <LinearGradient
       style={[styles.gradient, style]}
