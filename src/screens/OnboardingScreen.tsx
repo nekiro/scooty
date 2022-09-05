@@ -11,13 +11,10 @@ import Image from '../components/Image';
 const OnboardingScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Onboarding'>) => {
-  const onLoginPress = () => {
-    navigation.navigate('Login');
-  };
-
-  const onSignUpPress = () => {
-    //
-  };
+  const onLoginPress = () =>
+    navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+  const onSignUpPress = () =>
+    navigation.reset({ index: 0, routes: [{ name: 'Register' }] });
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, StyleProp, TextStyle, View } from 'react-native';
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -42,7 +42,6 @@ const DateInput = ({ style }: DateInputProps) => {
     setDate(date as Date);
     setLastAction(new Date());
 
-    console.log('on change date', date);
     if (!intervalRef) {
       setIntervalRef(
         setInterval(() => periodicallyCheckForActions(actionRef.current), 500),

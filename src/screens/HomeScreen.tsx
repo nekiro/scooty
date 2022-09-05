@@ -2,8 +2,6 @@ import React, { useMemo, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Region } from 'react-native-maps';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
 import BackgroundGradient from '../components/BackgroundGradient';
 import { icons, images, logo } from '../assets';
 import useLocation, { Location } from '../hooks/useLocation';
@@ -19,7 +17,13 @@ import { getRegion } from '../lib';
 import SplashScreen from './SplashScreen';
 import Image from '../components/Image';
 
-const markersData: any[] = [
+type MarkerData = {
+  latitude: number;
+  longitude: number;
+  onPress?: () => void;
+};
+
+const markersData: MarkerData[] = [
   {
     latitude: 52.242723192503114,
     longitude: 21.084935663900776,
@@ -38,11 +42,9 @@ const markersData: any[] = [
   },
 ];
 
-const HomeScreen = ({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
+const HomeScreen = () => {
   const { location } = useLocation({ onUpdateLocation });
-  const { show, setContent } = useModal();
+  const { setContentAndShow } = useModal();
   const mapRef = useRef<MapView>(null);
 
   const MenuModalComponent = useMemo(() => <MenuModal />, []);
@@ -56,22 +58,10 @@ const HomeScreen = ({
     location && animateToRegion(getRegion(location), 1000);
   }
 
-  const showFilters = () => {
-    setContent(FilterModalComponent);
-    show();
-  };
-
-  const showMenu = () => {
-    setContent(MenuModalComponent);
-    show();
-  };
-
+  const showFilters = () => setContentAndShow(FilterModalComponent);
+  const showMenu = () => setContentAndShow(MenuModalComponent);
   const onArrowPress = () => location && animateToRegion(getRegion(location));
-
-  const onRideButtonPress = () => {
-    setContent(ScooterModalComponent);
-    show();
-  };
+  const onRideButtonPress = () => setContentAndShow(ScooterModalComponent);
 
   if (!location) {
     return <SplashScreen />;
@@ -112,7 +102,6 @@ const HomeScreen = ({
             {location &&
               markersData.map((marker) => (
                 <MapMarker
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                   key={`${marker.latitude}${marker.longitude}`}
                   location={marker}
                   onPress={marker.onPress}

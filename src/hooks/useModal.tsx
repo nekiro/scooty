@@ -13,6 +13,7 @@ export type ModalContext = {
   isVisible: () => boolean;
   setContent: (content: JSX.Element) => void;
   hasContent: () => boolean;
+  setContentAndShow: (content: JSX.Element) => void;
 };
 
 const context = createContext<ModalContext>({
@@ -22,6 +23,7 @@ const context = createContext<ModalContext>({
   isVisible: () => false,
   setContent: () => {},
   hasContent: () => false,
+  setContentAndShow: () => {},
 });
 
 export const ModalContextProvider = ({ children }: PropsWithChildren) => {
@@ -36,10 +38,22 @@ export const ModalContextProvider = ({ children }: PropsWithChildren) => {
   const setContent = (content: JSX.Element) => {
     setContentState(content);
   };
+  const setContentAndShow = (content: JSX.Element) => {
+    setContent(content);
+    show();
+  };
 
   return (
     <context.Provider
-      value={{ show, hide, toggle, isVisible, setContent, hasContent }}
+      value={{
+        show,
+        hide,
+        toggle,
+        isVisible,
+        setContent,
+        hasContent,
+        setContentAndShow,
+      }}
     >
       {content && (
         <Modal preset="bottom" isVisible={visible} onHide={hide}>
