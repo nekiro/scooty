@@ -12,7 +12,7 @@ type BaseTextInputProps = {
   keyboardType?: KeyboardTypeOptions;
   style?: StyleProp<TextStyle>;
   placeholder?: string;
-  children?: JSX.Element | JSX.Element[];
+  children?: JSX.Element | JSX.Element[] | string;
 } & Partial<TextInputProps>;
 
 const BaseTextInput = ({
@@ -27,6 +27,7 @@ const BaseTextInput = ({
       style={[styles.input, style]}
       keyboardType={keyboardType}
       placeholder={placeholder}
+      placeholderTextColor="#cbd5e0"
       {...props}
     >
       {children}
@@ -40,7 +41,6 @@ const styles = StyleSheet.create({
     width: '90%',
     borderWidth: 1,
     padding: 15,
-    textAlign: 'center',
     borderRadius: 5,
     backgroundColor: colors.white,
     color: colors.black,

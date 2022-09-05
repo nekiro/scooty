@@ -12,7 +12,9 @@ const LogoHeader = ({ children, style }: LogoHeaderProps) => {
   return (
     <View style={[styles.container, style]}>
       <Image source={logo.light} style={styles.logo} height={50} width={200} />
-      <Text style={styles.text}>{children}</Text>
+      <View>
+        <Text style={styles.text}>{children}</Text>
+      </View>
     </View>
   );
 };

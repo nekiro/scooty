@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
   countryCodeText: {
     fontFamily: 'CeraProBold',
     color: colors.lightGray,
+    opacity: 0.25,
     fontSize: 17,
   },
 });

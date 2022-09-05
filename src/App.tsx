@@ -7,19 +7,21 @@ import * as Fonts from 'expo-font';
 import { registerRootComponent } from 'expo';
 import { fonts } from './assets';
 import { ModalContextProvider } from './hooks/useModal';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 // import * as SplashScreen from 'expo-splash-screen';
 
 import OnboardingScreen from './screens/OnboardingScreen';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import RegisterScreen from './screens/RegisterScreen';
 
 export type RootStackParamList = {
   Home: undefined;
   Onboarding: undefined;
   Login: undefined;
+  Register: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -51,6 +53,7 @@ export default function App() {
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
           </Stack.Navigator>
         </ModalContextProvider>
       </NavigationContainer>
