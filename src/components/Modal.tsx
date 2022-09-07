@@ -6,6 +6,8 @@ import { StyleProp, View, ViewStyle } from 'react-native';
 import BackgroundGradient from './BackgroundGradient';
 import colors from '../lib/colorScheme';
 
+export type ModalPreset = 'bottom' | 'center';
+
 type PresetInfo = {
   useModalLine?: boolean;
   animation: {
@@ -77,7 +79,7 @@ const presetInfo: { bottom: PresetInfo; center: PresetInfo } = {
 };
 
 type ModalProps = {
-  preset: 'bottom' | 'center';
+  preset: ModalPreset;
   onHide?: () => void;
 };
 

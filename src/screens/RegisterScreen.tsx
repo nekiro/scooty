@@ -14,11 +14,11 @@ import VariantButton from '../components/VariantButton';
 import BackgroundGradient from '../components/BackgroundGradient';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-import PhoneNumberInput from '../components/PhoneNumberInput';
-import BaseTextInput from '../components/BaseTextInput';
+import PhoneNumberInput from '../components/input/PhoneNumber';
+import BaseTextInput from '../components/input/BaseText';
 import { isIos } from '../lib';
 import Spacer from '../components/Spacer';
-import DateInput from '../components/DateInput';
+import DateInput from '../components/input/Date';
 
 const RegisterScreen = ({
   navigation,
@@ -27,15 +27,13 @@ const RegisterScreen = ({
     //
   };
 
-  const onLoginPress = () => {
-    navigation.navigate('Login');
-  };
+  const onLoginPress = () => navigation.navigate('Login');
   const onSignUpPress = () => {};
 
   return (
     <>
       <StatusBar style="light" />
-      <BackgroundGradient style={styles.mainContainer}>
+      <BackgroundGradient>
         <SafeAreaView style={styles.mainContainer}>
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
@@ -47,45 +45,40 @@ const RegisterScreen = ({
             >
               <LogoHeader style={styles.header}>Hello</LogoHeader>
               <View style={styles.container}>
-                <View>
-                  <View style={styles.formView}>
-                    <Text style={[styles.text, styles.phoneNumberText]}>
-                      Phone Number
-                    </Text>
-                    <PhoneNumberInput style={styles.input} />
-                    <View style={styles.sideBySideContainer}>
-                      <View style={styles.inputContainer}>
-                        <Text style={styles.text}>Name</Text>
-                        <BaseTextInput style={styles.input} />
-                      </View>
-                      <Spacer />
-                      <View style={styles.inputContainer}>
-                        <Text style={styles.text}>Surname</Text>
-                        <BaseTextInput style={styles.input} />
-                      </View>
-                    </View>
-                    <Text style={[styles.text, styles.birthdayText]}>
-                      Birthday
-                    </Text>
-                    <DateInput style={styles.input} />
-                    <VariantButton
-                      onPress={onSignUpPress}
-                      style={styles.button}
-                      variant="solid"
-                    >
-                      Sign Up
-                    </VariantButton>
-                  </View>
-                  <Text style={[styles.text, styles.signUpText]}>
-                    Got an account?{' '}
-                    <Text
-                      onPress={onLoginPress}
-                      style={styles.signUpActionText}
-                    >
-                      Log in!
-                    </Text>
+                <View style={styles.formView}>
+                  <Text style={[styles.text, styles.phoneNumberText]}>
+                    Phone Number
                   </Text>
+                  <PhoneNumberInput />
+                  <View style={styles.sideBySideContainer}>
+                    <View style={styles.inputContainer}>
+                      <Text style={styles.text}>Name</Text>
+                      <BaseTextInput />
+                    </View>
+                    <Spacer />
+                    <View style={styles.inputContainer}>
+                      <Text style={styles.text}>Surname</Text>
+                      <BaseTextInput />
+                    </View>
+                  </View>
+                  <Text style={[styles.text, styles.birthdayText]}>
+                    Birthday
+                  </Text>
+                  <DateInput />
+                  <VariantButton
+                    onPress={onSignUpPress}
+                    style={styles.button}
+                    variant="solid"
+                  >
+                    Sign Up
+                  </VariantButton>
                 </View>
+                <Text style={[styles.text, styles.signUpText]}>
+                  Got an account?{' '}
+                  <Text onPress={onLoginPress} style={styles.signUpActionText}>
+                    Log in!
+                  </Text>
+                </Text>
               </View>
               <View style={styles.helpCenterView}>
                 <Text onPress={onHelpCenterPress} style={styles.helpCenterText}>
@@ -109,22 +102,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   sideBySideContainer: {
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   inputContainer: {
     flex: 6,
   },
-  container: { width: '100%', flex: 6, justifyContent: 'center' },
+  container: { flex: 6, justifyContent: 'center' },
   phoneNumberText: {
     alignSelf: 'flex-start',
   },
   birthdayText: {
     alignSelf: 'flex-start',
-  },
-  input: {
-    width: '100%',
   },
   signUpActionText: {
     color: colors.yellow,
@@ -138,7 +127,6 @@ const styles = StyleSheet.create({
   },
   helpCenterView: {
     flex: 1,
-    width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
@@ -147,10 +135,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formView: {
-    width: '90%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    marginHorizontal: 20,
   },
   header: {
     flex: 2,

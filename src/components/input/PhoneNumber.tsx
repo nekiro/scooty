@@ -12,8 +12,8 @@ import CountryPicker, {
   CountryCode,
   DARK_THEME,
 } from 'react-native-country-picker-modal';
-import useLocation from '../hooks/useLocation';
-import colors from '../lib/colorScheme';
+import useLocation from '../../hooks/useLocation';
+import colors from '../../lib/colorScheme';
 
 type PhoneNumberInputProps = {
   style?: StyleProp<TextStyle>;

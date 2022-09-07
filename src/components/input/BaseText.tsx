@@ -1,4 +1,4 @@
-import colors from '../lib/colorScheme';
+import colors from '../../lib/colorScheme';
 import {
   StyleSheet,
   TextInput,
@@ -37,8 +37,8 @@ const BaseTextInput = ({
 
 const styles = StyleSheet.create({
   input: {
+    width: '100%',
     height: 50,
-    width: '90%',
     borderWidth: 1,
     padding: 15,
     borderRadius: 5,

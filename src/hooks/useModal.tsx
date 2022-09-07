@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import Modal from '../components/Modal';
+import Modal, { ModalPreset } from '../components/Modal';
 
 export type ModalContext = {
   show: () => void;
@@ -12,6 +12,7 @@ export type ModalContext = {
   toggle: () => void;
   isVisible: () => boolean;
   setContent: (content: JSX.Element) => void;
+  setPreset: (preset: ModalPreset) => void;
   hasContent: () => boolean;
   setContentAndShow: (content: JSX.Element) => void;
 };
@@ -22,6 +23,7 @@ const context = createContext<ModalContext>({
   toggle: () => {},
   isVisible: () => false,
   setContent: () => {},
+  setPreset: () => {},
   hasContent: () => false,
   setContentAndShow: () => {},
 });
@@ -29,6 +31,7 @@ const context = createContext<ModalContext>({
 export const ModalContextProvider = ({ children }: PropsWithChildren) => {
   const [visible, setVisible] = useState(false);
   const [content, setContentState] = useState<JSX.Element | undefined>();
+  const [preset, setCurrentPreset] = useState<ModalPreset>('bottom');
 
   const show = () => setVisible(true);
   const hide = () => setVisible(false);
@@ -38,6 +41,7 @@ export const ModalContextProvider = ({ children }: PropsWithChildren) => {
   const setContent = (content: JSX.Element) => {
     setContentState(content);
   };
+  const setPreset = (preset: ModalPreset) => setCurrentPreset(preset);
   const setContentAndShow = (content: JSX.Element) => {
     setContent(content);
     show();
@@ -51,12 +55,13 @@ export const ModalContextProvider = ({ children }: PropsWithChildren) => {
         toggle,
         isVisible,
         setContent,
+        setPreset,
         hasContent,
         setContentAndShow,
       }}
     >
       {content && (
-        <Modal preset="bottom" isVisible={visible} onHide={hide}>
+        <Modal preset={preset} isVisible={visible} onHide={hide}>
           {content}
         </Modal>
       )}
@@ -65,6 +70,4 @@ export const ModalContextProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-export const useModal = (): ModalContext => {
-  return useContext(context);
-};
+export const useModal = (): ModalContext => useContext(context);

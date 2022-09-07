@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ImageBackground } from 'react-native';
+import { StyleSheet, Text, ImageBackground, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import colors from '../lib/colorScheme';
 import VariantButton from '../components/VariantButton';
@@ -25,25 +25,26 @@ const OnboardingScreen = ({
         resizeMode="cover"
       >
         <BackgroundGradient
-          style={styles.gradient}
           colors={['transparent', colors.black]}
           locations={[0, 0.8]}
         >
-          <Text style={styles.text}>
-            Get the freedom of transportation with
-          </Text>
-          <Image
-            source={logo.light}
-            width="50%"
-            height={25}
-            style={styles.logo}
-          />
-          <VariantButton onPress={onLoginPress} variant="solid">
-            Log In
-          </VariantButton>
-          <VariantButton onPress={onSignUpPress} variant="outlined">
-            Sign up
-          </VariantButton>
+          <View style={styles.content}>
+            <Text style={styles.text}>
+              Get the freedom of transportation with
+            </Text>
+            <Image
+              source={logo.light}
+              width="50%"
+              height={25}
+              style={styles.logo}
+            />
+            <VariantButton onPress={onLoginPress} variant="solid">
+              Log In
+            </VariantButton>
+            <VariantButton onPress={onSignUpPress} variant="outlined">
+              Sign up
+            </VariantButton>
+          </View>
         </BackgroundGradient>
       </ImageBackground>
     </>
@@ -51,11 +52,12 @@ const OnboardingScreen = ({
 };
 
 const styles = StyleSheet.create({
-  gradient: {
+  content: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    paddingVertical: 60,
+    paddingHorizontal: 20,
+    paddingBottom: 60,
   },
   logo: { marginTop: 5, marginBottom: 25 },
   image: {

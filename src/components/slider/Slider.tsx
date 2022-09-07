@@ -1,26 +1,28 @@
 import { Slider as ReactNativeSlider } from '@miblanchard/react-native-slider';
 import { SliderProps as ReactNativeSliderProps } from '@miblanchard/react-native-slider/lib/types';
 
-import colors from '../lib/colorScheme';
+import colors from '../../lib/colorScheme';
 import { StyleSheet } from 'react-native';
 import SliderThumb from './SliderThumb';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode } from 'react';
 
 type SliderProps = {
   onValueChange?: (value: number | number[]) => void;
-  value: number[];
+  value: number[] | string[];
 };
 
 const Slider = ({
   onValueChange,
   value,
-}: SliderProps & Partial<ReactNativeSliderProps>) => {
+  minimumValue,
+  maximumValue,
+}: SliderProps & Optional<ReactNativeSliderProps, 'animationType'>) => {
   return (
     <ReactNativeSlider
       value={value}
       onValueChange={onValueChange}
-      minimumValue={0}
-      maximumValue={100}
+      minimumValue={minimumValue}
+      maximumValue={maximumValue}
       minimumTrackTintColor={colors.darkYellow}
       maximumTrackTintColor={colors.lightGray}
       trackStyle={styles.track}

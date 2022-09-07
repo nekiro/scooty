@@ -6,7 +6,6 @@ import BackgroundGradient from '../components/BackgroundGradient';
 import { icons, images, logo } from '../assets';
 import useLocation, { Location } from '../hooks/useLocation';
 import MapMarker from '../components/MapMarker';
-import StartRidingButton from '../components/StartRidingButton';
 import PressableIcon from '../components/PressableIcon';
 import MenuModal from './modals/MenuModal';
 import FiltersModal from './modals/FiltersModal';
@@ -16,6 +15,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { getRegion } from '../lib';
 import SplashScreen from './SplashScreen';
 import Image from '../components/Image';
+import VariantButton from '../components/VariantButton';
+import useDimensions from '../hooks/useDimensions';
 
 type MarkerData = {
   latitude: number;
@@ -43,6 +44,7 @@ const markersData: MarkerData[] = [
 ];
 
 const HomeScreen = () => {
+  const { vh } = useDimensions();
   const { location } = useLocation({ onUpdateLocation });
   const { setContentAndShow } = useModal();
   const mapRef = useRef<MapView>(null);
@@ -110,7 +112,7 @@ const HomeScreen = () => {
           </MapView>
           <BackgroundGradient
             pointerEvents="none"
-            style={styles.buttonsGradient}
+            style={[styles.buttonsGradient, { height: vh(30) }]}
             colors={['transparent', '#191A1A']}
             locations={[0.2, 1]}
           />
@@ -122,10 +124,13 @@ const HomeScreen = () => {
               height={50}
               onPress={onArrowPress}
             />
-            <StartRidingButton
+            <VariantButton
+              variant="solid"
               style={styles.rideButton}
               onPress={onRideButtonPress}
-            />
+            >
+              <Image source={images.startRidingIcon} />
+            </VariantButton>
           </View>
         </SafeAreaView>
       </BackgroundGradient>
@@ -139,30 +144,26 @@ const styles = StyleSheet.create({
   },
   arrow: {
     alignSelf: 'flex-end',
-    justifyContent: 'flex-start',
+    marginBottom: 10,
   },
   buttonsGradient: {
     zIndex: 0,
     elevation: 0,
     position: 'absolute',
     bottom: 0,
-    height: '40%',
+    // height: '30vh',
     width: '100%',
   },
   buttonsContainer: {
     zIndex: 1,
     elevation: 1,
     position: 'absolute',
-    bottom: 0,
-    height: '20%',
+    bottom: 45,
     width: '85%',
     alignSelf: 'center',
   },
   rideButton: {
     alignSelf: 'center',
-    bottom: 45,
-    zIndex: 1,
-    elevation: 1,
     width: '100%',
   },
   menuIcon: {

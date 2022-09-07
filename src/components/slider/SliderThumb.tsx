@@ -1,7 +1,9 @@
 import { View, StyleSheet } from 'react-native';
-import Text from './Text';
+import Text from '../Text';
 
-const SliderThumb = ({ value }: { value?: number | number[] }) => {
+type SliderThumbProps = { value?: number | string | number[] | string[] };
+
+const SliderThumb = ({ value }: SliderThumbProps) => {
   return value ? (
     <View style={styles.container}>
       <View style={styles.thumb} />

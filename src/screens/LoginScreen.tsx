@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
@@ -14,7 +13,8 @@ import VariantButton from '../components/VariantButton';
 import BackgroundGradient from '../components/BackgroundGradient';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-import PhoneNumberInput from '../components/PhoneNumberInput';
+import PhoneNumberInput from '../components/input/PhoneNumber';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { isIos } from '../lib';
 
 const LoginScreen = ({
@@ -27,8 +27,7 @@ const LoginScreen = ({
   return (
     <>
       <StatusBar style="light" />
-
-      <BackgroundGradient style={styles.mainContainer}>
+      <BackgroundGradient>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <SafeAreaView style={styles.mainContainer}>
             <KeyboardAvoidingView
@@ -37,30 +36,25 @@ const LoginScreen = ({
             >
               <LogoHeader style={styles.header}>Welcome</LogoHeader>
               <View style={styles.container}>
-                <View>
-                  <View style={styles.formView}>
-                    <Text style={[styles.text, styles.phoneNumberText]}>
-                      Phone Number
-                    </Text>
-                    <PhoneNumberInput style={styles.phoneNumberInput} />
-                    <VariantButton
-                      onPress={onLoginPress}
-                      style={styles.button}
-                      variant="solid"
-                    >
-                      Log In
-                    </VariantButton>
-                  </View>
-                  <Text style={[styles.text, styles.signUpText]}>
-                    Dont have an account?{' '}
-                    <Text
-                      onPress={onSignUpPress}
-                      style={styles.signUpActionText}
-                    >
-                      Sign up!
-                    </Text>
+                <View style={styles.formView}>
+                  <Text style={[styles.text, styles.phoneNumberText]}>
+                    Phone Number
                   </Text>
+                  <PhoneNumberInput />
+                  <VariantButton
+                    onPress={onLoginPress}
+                    style={styles.button}
+                    variant="solid"
+                  >
+                    Log In
+                  </VariantButton>
                 </View>
+                <Text style={[styles.text, styles.signUpText]}>
+                  Dont have an account?{' '}
+                  <Text onPress={onSignUpPress} style={styles.signUpActionText}>
+                    Sign up!
+                  </Text>
+                </Text>
               </View>
               <View style={styles.helpCenterView}>
                 <Text onPress={onHelpCenterPress} style={styles.helpCenterText}>
@@ -80,15 +74,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    width: '100%',
     marginTop: 20,
   },
-  container: { width: '100%', flex: 6, justifyContent: 'center' },
+  container: { flex: 6, justifyContent: 'center' },
   phoneNumberText: {
     alignSelf: 'flex-start',
-  },
-  phoneNumberInput: {
-    width: '100%',
   },
   signUpActionText: {
     color: colors.yellow,
@@ -111,10 +101,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formView: {
-    width: '90%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    paddingHorizontal: 20,
   },
   header: {
     flex: 2,
