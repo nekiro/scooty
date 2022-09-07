@@ -46,7 +46,7 @@ const MenuModal = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 30,
+    marginHorizontal: 15,
   },
   wallet: {
     marginTop: 20,

@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     height: '20%',
-    width: '85 %',
+    width: '85%',
     alignSelf: 'center',
   },
   rideButton: {

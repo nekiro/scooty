@@ -7,6 +7,7 @@ import {
   ViewStyle,
   StyleProp,
   PressableStateCallbackType,
+  TextStyle,
 } from 'react-native';
 import colors from '../lib/colorScheme';
 
@@ -15,6 +16,7 @@ type VariantButtonProps = {
   onPress?: (event: GestureResponderEvent) => void;
   children?: string | JSX.Element;
   style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
   glow?: boolean;
 };
 
@@ -23,6 +25,7 @@ const VariantButton = ({
   onPress,
   children,
   style,
+  textStyle,
   glow = false,
 }: VariantButtonProps) => {
   const getStyle = useCallback(
@@ -43,7 +46,7 @@ const VariantButton = ({
   return (
     <Pressable style={getStyle} onPress={onPress}>
       {typeof children === 'string' ? (
-        <Text style={[styles.baseText, styles[`${variant}Text`]]}>
+        <Text style={[styles.baseText, styles[`${variant}Text`], textStyle]}>
           {children}
         </Text>
       ) : (

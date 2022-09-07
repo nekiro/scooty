@@ -37,12 +37,20 @@ const presetInfo: { bottom: PresetInfo; center: PresetInfo } = {
     style: {
       gradient: {
         flex: 0,
-        paddingTop: 10,
-        paddingBottom: 40,
-        paddingHorizontal: 15,
+        paddingTop: 5,
+        paddingBottom: 50,
+        paddingHorizontal: 20,
         borderRadius: 20,
       },
       modal: { margin: 0, justifyContent: 'flex-end' },
+      modalLine: {
+        backgroundColor: '#F3F3F3',
+        width: 50,
+        height: 3,
+        borderRadius: 49,
+        alignSelf: 'center',
+        marginBottom: 20,
+      },
     },
   },
   center: {

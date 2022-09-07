@@ -48,7 +48,7 @@ export default function App() {
         <ModalContextProvider>
           <Stack.Navigator
             screenOptions={screenOptions}
-            initialRouteName="Onboarding"
+            initialRouteName="Home"
           >
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />

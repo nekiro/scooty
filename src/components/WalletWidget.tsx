@@ -53,7 +53,7 @@ const WalletWidget = ({
 const styles = StyleSheet.create({
   container: {
     height: 153,
-    width: 325,
+    width: '100%',
     backgroundColor: colors.yellow,
     borderRadius: 10,
     padding: 20,
