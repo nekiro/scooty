@@ -6,7 +6,6 @@ import {
 import * as Fonts from 'expo-font';
 import { registerRootComponent } from 'expo';
 import { fonts } from './assets';
-import { ModalContextProvider } from './hooks/useModal';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -45,17 +44,15 @@ export default function App() {
   return (
     <SafeAreaProvider style={styles.safeArea}>
       <NavigationContainer>
-        <ModalContextProvider>
-          <Stack.Navigator
-            screenOptions={screenOptions}
-            initialRouteName="Home"
-          >
-            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </Stack.Navigator>
-        </ModalContextProvider>
+        <Stack.Navigator
+          screenOptions={screenOptions}
+          initialRouteName="Register"
+        >
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+        </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );

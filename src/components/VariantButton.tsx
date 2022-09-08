@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
   },
   baseText: {
     fontFamily: 'CeraProBold',
-    fontSize: 20,
+    fontSize: 15,
+    paddingHorizontal: 20,
   },
   solid: {
     backgroundColor: colors.yellow,

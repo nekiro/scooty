@@ -8,6 +8,7 @@ import BaseTextInput from './BaseText';
 import Image from '../Image';
 import { images } from '../../assets';
 import { useModal } from '../../hooks/useModal';
+import Modal from '../Modal';
 
 type DateInputProps = {
   style?: StyleProp<TextStyle>;
@@ -19,10 +20,11 @@ const DateInput = ({ style }: DateInputProps) => {
   const [date, setDate] = useState<Date | undefined>();
   const [lastAction, setLastAction] = useState<Date | undefined>();
   const [interval, setIntervalState] = useState<NodeJS.Timer | undefined>();
-  const { show, hide, setContent, isVisible, setPreset } = useModal();
+  const { show, hide, setContent, content, visible, preset } =
+    useModal('center');
 
-  const visibleRef = useRef(isVisible);
-  visibleRef.current = isVisible;
+  const visibleRef = useRef(visible);
+  visibleRef.current = visible;
 
   const actionRef = useRef(lastAction);
   actionRef.current = lastAction;
@@ -31,7 +33,6 @@ const DateInput = ({ style }: DateInputProps) => {
   intervalRef.current = interval;
 
   useEffect(() => {
-    setPreset('center');
     setContent(
       <DateTimePicker
         value={date ?? new Date()}
@@ -45,10 +46,10 @@ const DateInput = ({ style }: DateInputProps) => {
 
   const periodicallyCheckForActions = (
     lastAction: Date | undefined,
-    isVisible: () => boolean,
+    visible: boolean,
     interval: NodeJS.Timer | undefined,
   ) => {
-    if (!isVisible()) {
+    if (!visible) {
       return;
     }
 
@@ -98,6 +99,9 @@ const DateInput = ({ style }: DateInputProps) => {
           style={styles.arrow}
         />
       </View>
+      <Modal preset={preset} isVisible={visible} onHide={hide}>
+        {content}
+      </Modal>
     </>
   );
 };

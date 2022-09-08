@@ -5,6 +5,8 @@ import {
   ViewProps,
   GestureResponderEvent,
   PressableStateCallbackType,
+  StyleProp,
+  TextStyle,
 } from 'react-native';
 import Text from './Text';
 import colors from '../lib/colorScheme';
@@ -13,19 +15,25 @@ import Icon, { IconSource } from './Icon';
 type MenuIconOptionPros = {
   children: string;
   iconSource: IconSource;
+  textStyle?: StyleProp<TextStyle>;
+  height?: number;
+  width?: number;
   onPress?: (event: GestureResponderEvent) => void;
 };
 
 const MenuIconOption = ({
   children,
   iconSource,
+  height = 40,
+  width = 40,
   style,
+  textStyle,
   onPress,
 }: MenuIconOptionPros & ViewProps) => {
   const BaseComponent = () => (
     <View style={[styles.container, style]}>
-      <Icon height={40} width={40} source={iconSource} />
-      <Text style={styles.text}>{children}</Text>
+      <Icon height={height} width={width} source={iconSource} />
+      <Text style={[styles.text, textStyle]}>{children}</Text>
     </View>
   );
 
@@ -56,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  text: { color: colors.white, paddingLeft: 30, fontSize: 20 },
+  text: { color: colors.white, marginLeft: 30, fontSize: 20 },
 });
 
 export default MenuIconOption;

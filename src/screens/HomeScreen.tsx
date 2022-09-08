@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Region } from 'react-native-maps';
@@ -17,6 +17,7 @@ import SplashScreen from './SplashScreen';
 import Image from '../components/Image';
 import VariantButton from '../components/VariantButton';
 import useDimensions from '../hooks/useDimensions';
+import Modal from '../components/Modal';
 
 type MarkerData = {
   latitude: number;
@@ -46,7 +47,7 @@ const markersData: MarkerData[] = [
 const HomeScreen = () => {
   const { vh } = useDimensions();
   const { location } = useLocation({ onUpdateLocation });
-  const { setContentAndShow } = useModal();
+  const { setContentAndShow, hide, visible, content } = useModal();
   const mapRef = useRef<MapView>(null);
 
   const MenuModalComponent = useMemo(() => <MenuModal />, []);
@@ -132,6 +133,9 @@ const HomeScreen = () => {
               <Image source={images.startRidingIcon} />
             </VariantButton>
           </View>
+          <Modal preset="bottom" isVisible={visible} onHide={hide}>
+            {content}
+          </Modal>
         </SafeAreaView>
       </BackgroundGradient>
     </>
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
   },
   arrow: {
     alignSelf: 'flex-end',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   buttonsGradient: {
     zIndex: 0,
