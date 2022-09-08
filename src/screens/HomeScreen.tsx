@@ -172,11 +172,11 @@ const styles = StyleSheet.create({
   },
   menuIcon: {
     alignSelf: 'flex-start',
-    marginLeft: 30,
+    marginLeft: 20,
   },
   filterIcon: {
     alignSelf: 'flex-end',
-    marginRight: 30,
+    marginRight: 20,
   },
   logo: {
     flex: 5,
