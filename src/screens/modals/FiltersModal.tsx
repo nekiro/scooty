@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import Text from '../../components/Text';
 import Slider from '../../components/slider/Slider';
-import VariantButton from '../../components/VariantButton';
+import VariantButton from '../../components/Button';
 
 const FiltersModal = () => {
   const [battery, setBattery] = useState([35, 100]);

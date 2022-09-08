@@ -5,20 +5,17 @@ import { RootStackParamList } from '../../App';
 import { icons } from '../../assets';
 import MenuIconOption from '../../components/MenuIconOption';
 import WalletWidget from '../../components/WalletWidget';
-import { useModal } from '../../hooks/useModal';
 
 const MenuModal = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-
-  const { hide } = useModal();
 
   const onNotificationPress = () => console.log('notification press');
   const onProfilePress = () => console.log('profile press');
   const onRidingHistoryPress = () => console.log('riding history press');
   const onSavedCardsPress = () => console.log('saved card press');
   const onLogoutPress = () => {
-    hide();
+    // TODO hide modal
     navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
   };
 

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import colors from '../lib/colorScheme';
 import LogoHeader from '../components/LogoHeader';
-import VariantButton from '../components/VariantButton';
+import VariantButton from '../components/Button';
 import BackgroundGradient from '../components/BackgroundGradient';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
@@ -69,6 +69,7 @@ const RegisterScreen = ({
                     onPress={onSignUpPress}
                     style={styles.button}
                     variant="solid"
+                    textStyle={styles.buttonText}
                   >
                     Sign Up
                   </VariantButton>
@@ -100,6 +101,10 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     marginTop: 20,
+  },
+  buttonText: {
+    fontFamily: 'CeraProBold',
+    fontSize: 20,
   },
   sideBySideContainer: {
     flexDirection: 'row',

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import colors from '../lib/colorScheme';
 import LogoHeader from '../components/LogoHeader';
-import VariantButton from '../components/VariantButton';
+import VariantButton from '../components/Button';
 import BackgroundGradient from '../components/BackgroundGradient';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
@@ -44,6 +44,7 @@ const LoginScreen = ({
                   <VariantButton
                     onPress={onLoginPress}
                     style={styles.button}
+                    textStyle={styles.buttonText}
                     variant="solid"
                   >
                     Log In
@@ -75,6 +76,10 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
+  },
+  buttonText: {
+    fontFamily: 'CeraProBold',
+    fontSize: 20,
   },
   container: { flex: 6, justifyContent: 'center' },
   phoneNumberText: {

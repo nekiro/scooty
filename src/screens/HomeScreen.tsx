@@ -15,7 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { getRegion } from '../lib';
 import SplashScreen from './SplashScreen';
 import Image from '../components/Image';
-import VariantButton from '../components/VariantButton';
+import VariantButton from '../components/Button';
 import useDimensions from '../hooks/useDimensions';
 import Modal from '../components/Modal';
 

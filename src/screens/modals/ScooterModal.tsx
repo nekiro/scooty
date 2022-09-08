@@ -2,11 +2,8 @@ import { View, StyleSheet } from 'react-native';
 import { icons, images } from '../../assets';
 import Image from '../../components/Image';
 import MenuIconOption from '../../components/MenuIconOption';
-import Spacer from '../../components/Spacer';
 import Text from '../../components/Text';
-import VariantButton from '../../components/VariantButton';
-
-// TODO
+import VariantButton from '../../components/Button';
 
 const ScooterModal = () => {
   return (

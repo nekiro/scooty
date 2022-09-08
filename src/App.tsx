@@ -44,10 +44,7 @@ export default function App() {
   return (
     <SafeAreaProvider style={styles.safeArea}>
       <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={screenOptions}
-          initialRouteName="Register"
-        >
+        <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
