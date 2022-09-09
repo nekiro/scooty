@@ -57,7 +57,7 @@ const DateInput = ({ style }: DateInputProps) => {
       return;
     }
 
-    if (new Date().getTime() - lastAction.getTime() > 2000) {
+    if (new Date().getTime() - lastAction.getTime() > 1500) {
       hide();
       clearInterval(interval);
     }

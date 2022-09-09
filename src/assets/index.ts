@@ -1,6 +1,7 @@
 import startRidingIcon from './start-riding.svg';
 import onboardingBackground from './onboarding-bg.png';
 import mapMarker from './map-marker.svg';
+import mapMarkerYellow from './map-marker-yellow.svg';
 import arrowWithBg from './arrow-with-bg.svg';
 import splashBg from './splash.png';
 import bigLetterS from './big-s.svg';
@@ -31,6 +32,7 @@ export const logo = {
 export const images = {
   onboardingBackground,
   mapMarker,
+  mapMarkerYellow,
   startRidingIcon,
   arrowWithBg,
   splashBg,

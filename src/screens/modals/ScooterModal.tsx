@@ -4,7 +4,7 @@ import Image from '../../components/Image';
 import MenuIconOption from '../../components/MenuIconOption';
 import Text from '../../components/Text';
 import VariantButton from '../../components/Button';
-import { ScooterData } from '../HomeScreen';
+import { ScooterData } from '../../lib/scootersRepo';
 import { useModal } from '../../hooks/useModal';
 import RoadmapModal from './RoadmapModal';
 import Modal from '../../components/Modal';

@@ -6,7 +6,7 @@ export type ModalContext = {
   hide: () => void;
   toggle: () => void;
   visible: boolean;
-  setContent: (content: JSX.Element) => void;
+  setContent: (content: JSX.Element | undefined) => void;
   content: JSX.Element | undefined;
   hasContent: () => boolean;
   setContentAndShow: (content: JSX.Element) => void;
@@ -23,7 +23,7 @@ export const useModal = (preset: ModalPreset = 'bottom'): ModalContext => {
   const hide = () => setVisible(false);
   const toggle = () => setVisible(!visible);
   const hasContent = () => !!content;
-  const setContent = (content: JSX.Element) => {
+  const setContent = (content: JSX.Element | undefined) => {
     setContentState(content);
   };
   const setContentAndShow = (content: JSX.Element) => {

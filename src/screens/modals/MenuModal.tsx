@@ -1,12 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RootStackParamList } from '../../App';
 import { icons } from '../../assets';
 import MenuIconOption from '../../components/MenuIconOption';
 import WalletWidget from '../../components/WalletWidget';
 
-const MenuModal = () => {
+type MenuModalProps = {
+  hideCallback?: () => void;
+};
+
+const MenuModal = ({ hideCallback }: MenuModalProps) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -15,8 +20,12 @@ const MenuModal = () => {
   const onRidingHistoryPress = () => console.log('riding history press');
   const onSavedCardsPress = () => console.log('saved card press');
   const onLogoutPress = () => {
-    // TODO hide modal
-    navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+    hideCallback?.();
+
+    setTimeout(
+      () => navigation.reset({ index: 0, routes: [{ name: 'Login' }] }),
+      500,
+    );
   };
 
   return (

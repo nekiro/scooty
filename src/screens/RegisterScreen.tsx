@@ -74,12 +74,17 @@ const RegisterScreen = ({
                     Sign Up
                   </VariantButton>
                 </View>
-                <Text style={[styles.text, styles.signUpText]}>
-                  Got an account?{' '}
-                  <Text onPress={onLoginPress} style={styles.signUpActionText}>
-                    Log in!
+                <View>
+                  <Text style={[styles.text, styles.signUpText]}>
+                    Got an account?{' '}
+                    <Text
+                      onPress={onLoginPress}
+                      style={styles.signUpActionText}
+                    >
+                      Log in!
+                    </Text>
                   </Text>
-                </Text>
+                </View>
               </View>
               <View style={styles.helpCenterView}>
                 <Text onPress={onHelpCenterPress} style={styles.helpCenterText}>

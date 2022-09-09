@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import MapView, { LatLng, MapEvent, Region } from 'react-native-maps';
+import MapView, { MapEvent, Region, PROVIDER_GOOGLE } from 'react-native-maps';
 import BackgroundGradient from '../components/BackgroundGradient';
 import { icons, images, logo } from '../assets';
 import useLocation, { Location } from '../hooks/useLocation';
@@ -18,35 +18,8 @@ import Image from '../components/Image';
 import VariantButton from '../components/Button';
 import useDimensions from '../hooks/useDimensions';
 import Modal from '../components/Modal';
-
-export type ScooterData = {
-  id: string;
-  coordinate: LatLng;
-  battery: number;
-};
-
-const scooters: ScooterData[] = [
-  {
-    id: 'WAW01A',
-    coordinate: { latitude: 52.242723192503114, longitude: 21.084935663900776 },
-    battery: 10,
-  },
-  {
-    id: 'WAW02A',
-    coordinate: { latitude: 52.24424097016489, longitude: 21.077011900354172 },
-    battery: 20,
-  },
-  {
-    id: 'WAW03A',
-    coordinate: { latitude: 52.244304793602424, longitude: 21.082401460227086 },
-    battery: 100,
-  },
-  {
-    id: 'WAW04A',
-    coordinate: { latitude: 52.244390115317636, longitude: 21.087334575289887 },
-    battery: 70,
-  },
-];
+import mapStyle from '../assets/mapStyle';
+import scooters, { ScooterData } from '../lib/scootersRepo';
 
 const HomeScreen = () => {
   const { vh } = useDimensions();
@@ -56,14 +29,23 @@ const HomeScreen = () => {
   const [chosenScooter, setChosenScooter] = useState<ScooterData | undefined>();
   const mapRef = useRef<MapView>(null);
 
-  const MenuModalComponent = useMemo(() => <MenuModal />, []);
+  const MenuModalComponent = useMemo(
+    () => <MenuModal hideCallback={hide} />,
+    [],
+  );
   const FilterModalComponent = useMemo(() => <FiltersModal />, []);
   const ScooterModalComponent = useMemo(
     () => <ScooterModal scooter={chosenScooter} />,
     [chosenScooter],
   );
 
-  useEffect(() => setContent(ScooterModalComponent), [chosenScooter]);
+  useEffect(() => {
+    if (!chosenScooter) {
+      hide();
+    } else {
+      setContent(ScooterModalComponent);
+    }
+  }, [chosenScooter]);
 
   const animateToRegion = (region: Region, duration: number = 600) =>
     mapRef.current?.animateToRegion(region, duration);
@@ -75,7 +57,14 @@ const HomeScreen = () => {
   const showFilters = () => setContentAndShow(FilterModalComponent);
   const showMenu = () => setContentAndShow(MenuModalComponent);
   const onArrowPress = () => location && animateToRegion(getRegion(location));
-  const onRideButtonPress = () => true;
+  const onRideButtonPress = () => true; // TODO
+  const onHide = () => {
+    if (content === ScooterModalComponent) {
+      setChosenScooter(undefined);
+    } else {
+      hide();
+    }
+  };
 
   const onMarkerPress = (
     event: MapEvent<{
@@ -126,7 +115,13 @@ const HomeScreen = () => {
               onPress={showFilters}
             />
           </View>
-          <MapView ref={mapRef} showsUserLocation={true} style={styles.map}>
+          <MapView
+            ref={mapRef}
+            showsUserLocation={true}
+            style={styles.map}
+            provider={PROVIDER_GOOGLE}
+            customMapStyle={mapStyle}
+          >
             {location &&
               scooters.map((scooter) => (
                 <MapMarker
@@ -134,6 +129,7 @@ const HomeScreen = () => {
                   identifier={scooter.id}
                   location={scooter.coordinate}
                   onPress={onMarkerPress}
+                  pressed={chosenScooter?.id === scooter.id}
                 />
               ))}
           </MapView>
@@ -159,7 +155,7 @@ const HomeScreen = () => {
               <Image source={images.startRidingIcon} />
             </VariantButton>
           </View>
-          <Modal preset="bottom" isVisible={visible} onHide={hide}>
+          <Modal preset="bottom" isVisible={visible} onHide={onHide}>
             {content}
           </Modal>
         </SafeAreaView>
