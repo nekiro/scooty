@@ -13,6 +13,7 @@ type MapMarkerProps = {
 const MapMarker = ({
   location,
   source,
+  ...props
 }: MapMarkerProps & Omit<MarkerProps, 'coordinate'>) => {
   return (
     <Marker
@@ -21,6 +22,8 @@ const MapMarker = ({
         longitude: location.longitude,
       }}
       tracksViewChanges={false}
+      zIndex={1}
+      {...props}
     >
       <Image
         source={source ?? images.mapMarker}

@@ -4,13 +4,30 @@ import Image from '../../components/Image';
 import MenuIconOption from '../../components/MenuIconOption';
 import Text from '../../components/Text';
 import VariantButton from '../../components/Button';
+import { ScooterData } from '../HomeScreen';
+import { useModal } from '../../hooks/useModal';
+import RoadmapModal from './RoadmapModal';
+import Modal from '../../components/Modal';
 
-const ScooterModal = () => {
+type ScooterModalProps = {
+  scooter?: ScooterData;
+};
+
+const ScooterModal = ({ scooter }: ScooterModalProps) => {
+  const { setContentAndShow, hide, visible, content } = useModal();
+
+  const onReservationPress = () =>
+    setContentAndShow(<RoadmapModal onCancelPress={hide} onDrawPress={hide} />);
+
+  if (!scooter) {
+    return null;
+  }
+
   return (
     <>
       <View style={styles.container}>
         <View style={styles.row}>
-          <Text style={styles.idText}>SUR4Y1L</Text>
+          <Text style={styles.idText}>{scooter.id}</Text>
           <MenuIconOption
             height={14}
             width={14}
@@ -45,7 +62,7 @@ const ScooterModal = () => {
             textStyle={styles.iconOptionText}
             iconSource={icons.yellowBattery}
           >
-            75 %
+            {scooter.battery} %
           </MenuIconOption>
         </View>
         <View style={[styles.row, styles.scooterContainer]}>
@@ -60,11 +77,18 @@ const ScooterModal = () => {
         </View>
 
         <View style={styles.row}>
-          <VariantButton style={styles.reservationBtn} variant="solid">
+          <VariantButton
+            style={styles.reservationBtn}
+            variant="solid"
+            onPress={onReservationPress}
+          >
             Reservation
           </VariantButton>
         </View>
       </View>
+      <Modal preset="center" isVisible={visible} onHide={hide}>
+        {content}
+      </Modal>
     </>
   );
 };

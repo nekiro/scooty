@@ -8,6 +8,7 @@ import logoDark from './logo-dark.svg';
 import logoLight from './logo-light.svg';
 import rightArrow from './right-arrow.svg';
 import scooterSide from './scooter-side.svg';
+import roadmap from './roadmap.svg';
 
 import arrow from './icons/arrow.svg';
 import hamburger from './icons/hamburger.svg';
@@ -36,6 +37,7 @@ export const images = {
   bigLetterS,
   rightArrow,
   scooterSide,
+  roadmap,
 };
 
 export const icons = {

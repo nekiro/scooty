@@ -16,6 +16,7 @@ type PresetInfo = {
     out: string;
     outTiming: number;
   };
+  backdropEnabled?: boolean;
   swipeDirection?: Direction;
   backdropOpacity?: number;
   style: {
@@ -44,7 +45,10 @@ const presetInfo: { bottom: PresetInfo; center: PresetInfo } = {
         paddingHorizontal: 20,
         borderRadius: 20,
       },
-      modal: { margin: 0, justifyContent: 'flex-end' },
+      modal: {
+        margin: 0,
+        justifyContent: 'flex-end',
+      },
       modalLine: {
         backgroundColor: '#F3F3F3',
         width: 50,
@@ -66,9 +70,9 @@ const presetInfo: { bottom: PresetInfo; center: PresetInfo } = {
     style: {
       gradient: {
         flex: 0,
-        borderColor: colors.yellow,
-        borderRadius: 20,
-        borderWidth: 1,
+        borderRadius: 11,
+        // borderColor: colors.yellow,
+        // borderWidth: 0.5,
         padding: 10,
         shadowColor: colors.yellow,
         shadowRadius: 5,
@@ -96,12 +100,14 @@ const Modal = ({
       onBackdropPress={onHide}
       onBackButtonPress={onHide}
       onSwipeComplete={onHide}
+      hasBackdrop={info.backdropEnabled ?? true}
       animationIn={info.animation.in as any}
       animationInTiming={info.animation.inTiming}
       animationOut={info.animation.out as any}
       animationOutTiming={info.animation.outTiming}
       swipeDirection={info.swipeDirection}
       style={info.style.modal}
+      backdropTransitionOutTiming={0}
       backdropOpacity={info.backdropOpacity}
       {...props}
     >

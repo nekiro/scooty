@@ -1,7 +1,7 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import MapView, { Region } from 'react-native-maps';
+import MapView, { LatLng, MapEvent, Region } from 'react-native-maps';
 import BackgroundGradient from '../components/BackgroundGradient';
 import { icons, images, logo } from '../assets';
 import useLocation, { Location } from '../hooks/useLocation';
@@ -19,40 +19,51 @@ import VariantButton from '../components/Button';
 import useDimensions from '../hooks/useDimensions';
 import Modal from '../components/Modal';
 
-type MarkerData = {
-  latitude: number;
-  longitude: number;
-  onPress?: () => void;
+export type ScooterData = {
+  id: string;
+  coordinate: LatLng;
+  battery: number;
 };
 
-const markersData: MarkerData[] = [
+const scooters: ScooterData[] = [
   {
-    latitude: 52.242723192503114,
-    longitude: 21.084935663900776,
+    id: 'WAW01A',
+    coordinate: { latitude: 52.242723192503114, longitude: 21.084935663900776 },
+    battery: 10,
   },
   {
-    latitude: 52.24424097016489,
-    longitude: 21.077011900354172,
+    id: 'WAW02A',
+    coordinate: { latitude: 52.24424097016489, longitude: 21.077011900354172 },
+    battery: 20,
   },
   {
-    latitude: 52.244304793602424,
-    longitude: 21.082401460227086,
+    id: 'WAW03A',
+    coordinate: { latitude: 52.244304793602424, longitude: 21.082401460227086 },
+    battery: 100,
   },
   {
-    latitude: 52.244390115317636,
-    longitude: 21.087334575289887,
+    id: 'WAW04A',
+    coordinate: { latitude: 52.244390115317636, longitude: 21.087334575289887 },
+    battery: 70,
   },
 ];
 
 const HomeScreen = () => {
   const { vh } = useDimensions();
   const { location } = useLocation({ onUpdateLocation });
-  const { setContentAndShow, hide, visible, content } = useModal();
+  const { setContentAndShow, setContent, hide, show, visible, content } =
+    useModal();
+  const [chosenScooter, setChosenScooter] = useState<ScooterData | undefined>();
   const mapRef = useRef<MapView>(null);
 
   const MenuModalComponent = useMemo(() => <MenuModal />, []);
   const FilterModalComponent = useMemo(() => <FiltersModal />, []);
-  const ScooterModalComponent = useMemo(() => <ScooterModal />, []);
+  const ScooterModalComponent = useMemo(
+    () => <ScooterModal scooter={chosenScooter} />,
+    [chosenScooter],
+  );
+
+  useEffect(() => setContent(ScooterModalComponent), [chosenScooter]);
 
   const animateToRegion = (region: Region, duration: number = 600) =>
     mapRef.current?.animateToRegion(region, duration);
@@ -64,7 +75,26 @@ const HomeScreen = () => {
   const showFilters = () => setContentAndShow(FilterModalComponent);
   const showMenu = () => setContentAndShow(MenuModalComponent);
   const onArrowPress = () => location && animateToRegion(getRegion(location));
-  const onRideButtonPress = () => setContentAndShow(ScooterModalComponent);
+  const onRideButtonPress = () => true;
+
+  const onMarkerPress = (
+    event: MapEvent<{
+      action: 'marker-press';
+      id: string;
+    }>,
+  ) => {
+    const scooter = scooters.find(
+      (scooter) => scooter.id === event.nativeEvent.id,
+    );
+
+    if (!scooter) {
+      // send error
+      return;
+    }
+
+    setChosenScooter(scooter);
+    show();
+  };
 
   if (!location) {
     return <SplashScreen />;
@@ -96,18 +126,14 @@ const HomeScreen = () => {
               onPress={showFilters}
             />
           </View>
-          <MapView
-            ref={mapRef}
-            showsUserLocation={true}
-            style={styles.map}
-            // onMapLoaded={() => console.log('map loaded')}
-          >
+          <MapView ref={mapRef} showsUserLocation={true} style={styles.map}>
             {location &&
-              markersData.map((marker) => (
+              scooters.map((scooter) => (
                 <MapMarker
-                  key={`${marker.latitude}${marker.longitude}`}
-                  location={marker}
-                  onPress={marker.onPress}
+                  key={scooter.id}
+                  identifier={scooter.id}
+                  location={scooter.coordinate}
+                  onPress={onMarkerPress}
                 />
               ))}
           </MapView>

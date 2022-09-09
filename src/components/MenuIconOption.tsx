@@ -13,7 +13,6 @@ import colors from '../lib/colorScheme';
 import Icon, { IconSource } from './Icon';
 
 type MenuIconOptionPros = {
-  children: string;
   iconSource: IconSource;
   textStyle?: StyleProp<TextStyle>;
   height?: number;

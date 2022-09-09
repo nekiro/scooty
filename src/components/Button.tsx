@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import colors from '../lib/colorScheme';
 
-type VariantButtonProps = {
-  variant: 'solid' | 'outlined';
+export type ButtonVariant = 'solid' | 'outlined' | 'link';
+
+type ButtonProps = {
+  variant: ButtonVariant;
   onPress?: (event: GestureResponderEvent) => void;
   children?: string | JSX.Element;
   style?: StyleProp<ViewStyle>;
@@ -20,14 +22,14 @@ type VariantButtonProps = {
   glow?: boolean;
 };
 
-const VariantButton = ({
+const Button = ({
   variant,
   onPress,
   children,
   style,
   textStyle,
   glow = false,
-}: VariantButtonProps) => {
+}: ButtonProps) => {
   const getStyle = useCallback(
     (state: PressableStateCallbackType) => {
       return [
@@ -81,6 +83,11 @@ const styles = StyleSheet.create({
   outlinedText: {
     color: colors.yellow,
   },
+  linkText: {
+    color: colors.white,
+    opacity: 0.75,
+  },
+  link: {},
   glow: {
     shadowColor: '#eef511',
     shadowOffset: { height: 0, width: 7 },
@@ -89,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VariantButton;
+export default Button;
