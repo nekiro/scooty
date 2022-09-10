@@ -37,23 +37,21 @@ export default function App() {
   }
 
   return (
-    <>
-      <SplashContextProvider>
-        <SafeAreaProvider style={styles.safeArea}>
-          <NavigationContainer>
-            <Stack.Navigator
-              screenOptions={screenOptions}
-              initialRouteName="Home"
-            >
-              <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Register" component={RegisterScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </SafeAreaProvider>
-      </SplashContextProvider>
-    </>
+    <SplashContextProvider>
+      <SafeAreaProvider style={styles.safeArea}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={screenOptions}
+            initialRouteName="Home"
+          >
+            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </SplashContextProvider>
   );
 }
 
