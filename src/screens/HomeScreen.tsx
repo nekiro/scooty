@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import MapView, { MapEvent, Region, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { MapEvent, PROVIDER_GOOGLE } from 'react-native-maps';
 import BackgroundGradient from '../components/BackgroundGradient';
 import { icons, images, logo } from '../assets';
-import useLocation, { Location } from '../hooks/useLocation';
-import MapMarker from '../components/MapMarker';
+import useLocation from '../hooks/useLocation';
+import { MemoizedMapMarker } from '../components/MapMarker';
 import PressableIcon from '../components/PressableIcon';
 import MenuModal from './modals/MenuModal';
 import FiltersModal from './modals/FiltersModal';
@@ -13,57 +12,47 @@ import { useModal } from '../hooks/useModal';
 import ScooterModal from './modals/ScooterModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getRegion } from '../lib';
-import SplashScreen from './SplashScreen';
 import Image from '../components/Image';
 import VariantButton from '../components/Button';
 import useDimensions from '../hooks/useDimensions';
 import Modal from '../components/Modal';
 import mapStyle from '../assets/mapStyle';
 import scooters, { ScooterData } from '../lib/scootersRepo';
+import colors from '../lib/colorScheme';
+import useSplash from '../hooks/useSplash';
 
 const HomeScreen = () => {
   const { vh } = useDimensions();
-  const { location } = useLocation({ onUpdateLocation });
-  const { setContentAndShow, setContent, hide, show, visible, content } =
-    useModal();
+  const { location } = useLocation();
+  const { setContentAndShow, hide, visible, content } = useModal();
   const [chosenScooter, setChosenScooter] = useState<ScooterData | undefined>();
+  const [mapLoaded, setMapLoaded] = useState(false);
   const mapRef = useRef<MapView>(null);
+  const { show: showSplash, hide: hideSplash } = useSplash();
 
   const MenuModalComponent = useMemo(
     () => <MenuModal hideCallback={hide} />,
     [],
   );
   const FilterModalComponent = useMemo(() => <FiltersModal />, []);
-  const ScooterModalComponent = useMemo(
-    () => <ScooterModal scooter={chosenScooter} />,
-    [chosenScooter],
-  );
 
   useEffect(() => {
-    if (!chosenScooter) {
-      hide();
-    } else {
-      setContent(ScooterModalComponent);
+    if (location && mapLoaded) {
+      hideSplash();
     }
-  }, [chosenScooter]);
-
-  const animateToRegion = (region: Region, duration: number = 600) =>
-    mapRef.current?.animateToRegion(region, duration);
-
-  function onUpdateLocation(location: Location | null) {
-    location && animateToRegion(getRegion(location), 1000);
-  }
+  }, [location, mapLoaded]);
 
   const showFilters = () => setContentAndShow(FilterModalComponent);
   const showMenu = () => setContentAndShow(MenuModalComponent);
-  const onArrowPress = () => location && animateToRegion(getRegion(location));
+  const onArrowPress = () =>
+    location && mapRef.current?.animateToRegion(getRegion(location), 600);
   const onRideButtonPress = () => true; // TODO
   const onHide = () => {
-    if (content === ScooterModalComponent) {
+    if (chosenScooter) {
       setChosenScooter(undefined);
-    } else {
-      hide();
     }
+
+    hide();
   };
 
   const onMarkerPress = (
@@ -82,49 +71,55 @@ const HomeScreen = () => {
     }
 
     setChosenScooter(scooter);
-    show();
+    setContentAndShow(<ScooterModal scooter={scooter} />);
   };
 
-  if (!location) {
-    return <SplashScreen />;
-  }
-
   return (
-    <>
-      <StatusBar style="light" />
-      <BackgroundGradient style={styles.mainContainer}>
-        <SafeAreaView
-          style={styles.mainContainer}
-          edges={['right', 'top', 'left']}
-        >
-          <View style={styles.bar}>
-            <PressableIcon
-              source={icons.hamburger}
-              iconStyle={styles.menuIcon}
-              onPress={showMenu}
-            />
-            <Image
-              source={logo.light}
-              height={60}
-              width={150}
-              style={styles.logo}
-            />
-            <PressableIcon
-              source={icons.filters}
-              iconStyle={styles.filterIcon}
-              onPress={showFilters}
-            />
-          </View>
-          <MapView
-            ref={mapRef}
-            showsUserLocation={true}
-            style={styles.map}
-            provider={PROVIDER_GOOGLE}
-            customMapStyle={mapStyle}
-          >
-            {location &&
-              scooters.map((scooter) => (
-                <MapMarker
+    <BackgroundGradient
+      style={styles.mainContainer}
+      onLayout={() => {
+        if (!location || !mapLoaded) {
+          showSplash();
+        }
+      }}
+    >
+      <SafeAreaView
+        style={styles.mainContainer}
+        edges={['right', 'top', 'left']}
+      >
+        <View style={styles.bar}>
+          <PressableIcon
+            source={icons.hamburger}
+            iconStyle={styles.menuIcon}
+            onPress={showMenu}
+          />
+          <Image
+            source={logo.light}
+            height={60}
+            width={150}
+            style={styles.logo}
+          />
+          <PressableIcon
+            source={icons.filters}
+            iconStyle={styles.filterIcon}
+            onPress={showFilters}
+          />
+        </View>
+        <View style={styles.map}>
+          {location && (
+            <MapView
+              ref={mapRef}
+              showsUserLocation={true}
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+              customMapStyle={mapStyle}
+              initialRegion={getRegion(location)}
+              loadingBackgroundColor={colors.black}
+              loadingIndicatorColor={colors.black}
+              onMapLoaded={() => setMapLoaded(true)}
+            >
+              {scooters.map((scooter) => (
+                <MemoizedMapMarker
                   key={scooter.id}
                   identifier={scooter.id}
                   location={scooter.coordinate}
@@ -132,35 +127,37 @@ const HomeScreen = () => {
                   pressed={chosenScooter?.id === scooter.id}
                 />
               ))}
-          </MapView>
-          <BackgroundGradient
-            pointerEvents="none"
-            style={[styles.buttonsGradient, { height: vh(30) }]}
-            colors={['transparent', '#191A1A']}
-            locations={[0.2, 1]}
+            </MapView>
+          )}
+        </View>
+
+        <BackgroundGradient
+          pointerEvents="none"
+          style={[styles.buttonsGradient, { height: vh(30) }]}
+          colors={['transparent', '#191A1A']}
+          locations={[0.2, 1]}
+        />
+        <View style={styles.buttonsContainer}>
+          <PressableIcon
+            style={styles.arrow}
+            source={images.arrowWithBg}
+            width={50}
+            height={50}
+            onPress={onArrowPress}
           />
-          <View style={styles.buttonsContainer}>
-            <PressableIcon
-              style={styles.arrow}
-              source={images.arrowWithBg}
-              width={50}
-              height={50}
-              onPress={onArrowPress}
-            />
-            <VariantButton
-              variant="solid"
-              style={styles.rideButton}
-              onPress={onRideButtonPress}
-            >
-              <Image source={images.startRidingIcon} />
-            </VariantButton>
-          </View>
-          <Modal preset="bottom" isVisible={visible} onHide={onHide}>
-            {content}
-          </Modal>
-        </SafeAreaView>
-      </BackgroundGradient>
-    </>
+          <VariantButton
+            variant="solid"
+            style={styles.rideButton}
+            onPress={onRideButtonPress}
+          >
+            <Image source={images.startRidingIcon} />
+          </VariantButton>
+        </View>
+        <Modal preset="bottom" isVisible={visible} onHide={onHide}>
+          {content}
+        </Modal>
+      </SafeAreaView>
+    </BackgroundGradient>
   );
 };
 

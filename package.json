@@ -4,6 +4,7 @@
   "name": "scooty",
   "scripts": {
     "start": "expo start",
+    "prod": "expo start --no-dev --minify",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",

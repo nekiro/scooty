@@ -15,22 +15,25 @@ const MapMarker = ({
   location,
   source,
   pressed = false,
+  identifier,
   ...props
 }: MapMarkerProps & Omit<MarkerProps, 'coordinate'>) => {
+  console.log(identifier, pressed);
+
   return (
     <Marker
       coordinate={{
         latitude: location.latitude,
         longitude: location.longitude,
       }}
-      tracksViewChanges={false}
       zIndex={1}
+      identifier={identifier}
       {...props}
     >
       <Image
         source={source ?? (pressed ? images.mapMarkerYellow : images.mapMarker)}
-        width={pressed ? styles.pressedImage.width : styles.image.width}
-        height={pressed ? styles.pressedImage.width : styles.image.height}
+        width={styles.image.width}
+        height={styles.image.height}
       />
     </Marker>
   );
@@ -41,10 +44,12 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
   },
-  pressedImage: {
-    height: 80,
-    width: 80,
-  },
 });
 
-export default React.memo(MapMarker);
+export const MemoizedMapMarker = React.memo(
+  MapMarker,
+  (prevProps, nextProps) =>
+    prevProps.pressed === nextProps.pressed &&
+    prevProps.source === nextProps.source,
+);
+export default MapMarker;

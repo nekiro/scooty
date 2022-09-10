@@ -11,11 +11,11 @@ const config: ExpoConfig = {
   version: '1.0.0',
   orientation: 'portrait',
   backgroundColor: 'black',
-  splash: {
-    image: 'src/assets/splash.png',
-    resizeMode: 'cover',
-    backgroundColor: 'black',
-  },
+  // splash: {
+  //   image: 'src/assets/splash.png',
+  //   resizeMode: 'cover',
+  //   backgroundColor: 'black',
+  // },
   entryPoint: 'src/App.tsx',
   ios: {
     config: {

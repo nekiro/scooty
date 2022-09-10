@@ -3,13 +3,12 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
-import * as Fonts from 'expo-font';
 import { registerRootComponent } from 'expo';
-import { fonts } from './assets';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-// import * as SplashScreen from 'expo-splash-screen';
+import useCachedResources from './hooks/useResources';
+import { SplashContextProvider } from './hooks/useSplash';
 
 import OnboardingScreen from './screens/OnboardingScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -21,6 +20,7 @@ export type RootStackParamList = {
   Onboarding: undefined;
   Login: undefined;
   Register: undefined;
+  Splash: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -30,34 +30,36 @@ const screenOptions: NativeStackNavigationOptions = {
   headerBackVisible: false,
 };
 
-// Instruct SplashScreen not to hide yet, we want to do this manually
-// SplashScreen.preventAutoHideAsync().catch(() => {
-//   /* reloading the app might trigger some race conditions, ignore them */
-// });
-
 export default function App() {
-  const [fontsLoaded] = Fonts.useFonts(fonts);
-  if (!fontsLoaded) {
+  const loaded = useCachedResources();
+  if (!loaded) {
     return null;
   }
 
   return (
-    <SafeAreaProvider style={styles.safeArea}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
-          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <>
+      <SplashContextProvider>
+        <SafeAreaProvider style={styles.safeArea}>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={screenOptions}
+              initialRouteName="Home"
+            >
+              <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </SplashContextProvider>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: 'black',
+    backgroundColor: 'transparent',
   },
 });
 
