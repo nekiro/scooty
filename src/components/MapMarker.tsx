@@ -15,11 +15,9 @@ const MapMarker = ({
   location,
   source,
   pressed = false,
-  identifier,
+
   ...props
 }: MapMarkerProps & Omit<MarkerProps, 'coordinate'>) => {
-  console.log(identifier, pressed);
-
   return (
     <Marker
       coordinate={{
@@ -27,7 +25,6 @@ const MapMarker = ({
         longitude: location.longitude,
       }}
       zIndex={1}
-      identifier={identifier}
       {...props}
     >
       <Image

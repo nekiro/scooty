@@ -11,14 +11,13 @@ import FiltersModal from './modals/FiltersModal';
 import { useModal } from '../hooks/useModal';
 import ScooterModal from './modals/ScooterModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getRegion } from '../lib';
+import { getRegion, isAndroid } from '../lib';
 import Image from '../components/Image';
 import VariantButton from '../components/Button';
 import useDimensions from '../hooks/useDimensions';
 import Modal from '../components/Modal';
 import mapStyle from '../assets/mapStyle';
 import scooters, { ScooterData } from '../lib/scootersRepo';
-import colors from '../lib/colorScheme';
 import useSplash from '../hooks/useSplash';
 
 const HomeScreen = () => {
@@ -111,12 +110,10 @@ const HomeScreen = () => {
               ref={mapRef}
               showsUserLocation={true}
               style={styles.map}
-              provider={PROVIDER_GOOGLE}
+              provider={isAndroid ? PROVIDER_GOOGLE : null}
               customMapStyle={mapStyle}
               initialRegion={getRegion(location)}
-              loadingBackgroundColor={colors.black}
-              loadingIndicatorColor={colors.black}
-              onMapLoaded={() => setMapLoaded(true)}
+              onMapReady={() => setMapLoaded(true)}
             >
               {scooters.map((scooter) => (
                 <MemoizedMapMarker
