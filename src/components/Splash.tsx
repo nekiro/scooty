@@ -5,6 +5,7 @@ import BackgroundGradient from '../components/BackgroundGradient';
 import Image from '../components/Image';
 import { useEffect, useRef } from 'react';
 import Modal from 'react-native-modal';
+import { StatusBar } from 'expo-status-bar';
 
 const Splash = ({ visible }: { visible: boolean }) => {
   const { vh, vw, height } = useDimensions();
@@ -29,32 +30,35 @@ const Splash = ({ visible }: { visible: boolean }) => {
   }, [fadeAnim]);
 
   return (
-    <Modal
-      isVisible={visible}
-      style={styles.modal}
-      animationInTiming={1}
-      animationOutTiming={700}
-      animationOut="fadeOut"
-      hasBackdrop={false}
-    >
-      <BackgroundGradient
-        style={[styles.container, { height: vh(100), width: vw(100) }]}
+    <>
+      <StatusBar style="light" />
+      <Modal
+        isVisible={visible}
+        style={styles.modal}
+        animationInTiming={1}
+        animationOutTiming={700}
+        animationOut="fadeOut"
+        hasBackdrop={false}
       >
-        <Animated.View
-          style={[
-            styles.container,
-            { height: vh(100), width: vw(100), opacity: fadeAnim },
-          ]}
+        <BackgroundGradient
+          style={[styles.container, { height: vh(100), width: vw(100) }]}
         >
-          <Image
-            source={logo.light}
-            width={250}
-            height={50}
-            style={{ top: height / 2 - 50 }}
-          />
-        </Animated.View>
-      </BackgroundGradient>
-    </Modal>
+          <Animated.View
+            style={[
+              styles.container,
+              { height: vh(100), width: vw(100), opacity: fadeAnim },
+            ]}
+          >
+            <Image
+              source={logo.light}
+              width={250}
+              height={50}
+              style={{ top: height / 2 - 50 }}
+            />
+          </Animated.View>
+        </BackgroundGradient>
+      </Modal>
+    </>
   );
 };
 

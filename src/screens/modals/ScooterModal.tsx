@@ -8,6 +8,7 @@ import { ScooterData } from '../../lib/scootersRepo';
 import { useModal } from '../../hooks/useModal';
 import RoadmapModal from './RoadmapModal';
 import Modal from '../../components/Modal';
+import { isIos } from '../../lib';
 
 type ScooterModalProps = {
   scooter?: ScooterData;
@@ -66,7 +67,7 @@ const ScooterModal = ({ scooter }: ScooterModalProps) => {
           </MenuIconOption>
         </View>
         <View style={[styles.row, styles.scooterContainer]}>
-          <Image source={images.scooterSide} style={styles.scooter} />
+          <Image style={styles.scooter} source={images.scooterSide} />
         </View>
       </View>
       <View style={styles.container}>
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   scooterContainer: {
     alignItems: 'center',
   },
-  scooter: { transform: [{ rotateY: '180deg' }] },
+  scooter: { transform: isIos ? [{ rotateY: '180deg' }] : [] },
   idText: {
     color: 'white',
     fontFamily: 'CeraProBold',

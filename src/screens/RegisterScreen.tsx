@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Pressable,
 } from 'react-native';
 import colors from '../lib/colorScheme';
 import LogoHeader from '../components/LogoHeader';
@@ -28,7 +29,7 @@ const RegisterScreen = ({
   };
 
   const onLoginPress = () => navigation.navigate('Login');
-  const onSignUpPress = () => {};
+  const onSignUpPress = () => navigation.navigate('Login');
 
   return (
     <>
@@ -75,15 +76,15 @@ const RegisterScreen = ({
                   </VariantButton>
                 </View>
                 <View>
-                  <Text style={[styles.text, styles.signUpText]}>
-                    Got an account?{' '}
-                    <Text
-                      onPress={onLoginPress}
-                      style={styles.signUpActionText}
-                    >
-                      Log in!
+                  <Pressable
+                    style={styles.loginContainer}
+                    onPress={onLoginPress}
+                  >
+                    <Text style={[styles.text, styles.loginText]}>
+                      Got an account?{' '}
+                      <Text style={styles.loginActionText}>Log in!</Text>
                     </Text>
-                  </Text>
+                  </Pressable>
                 </View>
               </View>
               <View style={styles.helpCenterView}>
@@ -125,13 +126,15 @@ const styles = StyleSheet.create({
   birthdayText: {
     alignSelf: 'flex-start',
   },
-  signUpActionText: {
+  loginActionText: {
     color: colors.yellow,
     fontFamily: 'CeraProBold',
   },
-  signUpText: {
+  loginContainer: {
+    marginTop: 20,
+  },
+  loginText: {
     textAlign: 'center',
-    marginTop: 40,
     fontSize: 13,
     fontFamily: 'CeraProMedium',
   },
