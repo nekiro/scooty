@@ -3,7 +3,7 @@ import { SliderProps as ReactNativeSliderProps } from '@miblanchard/react-native
 
 import colors from '../../lib/colorScheme';
 import { StyleSheet } from 'react-native';
-// import SliderThumb from './SliderThumb';
+import SliderThumb from './SliderThumb';
 // import { ReactNode } from 'react';
 
 type SliderProps = {
@@ -27,6 +27,8 @@ const Slider = ({
     trackStyle={styles.track}
     thumbTintColor={colors.yellow}
     step={1}
+    onSlidingStart={() => console.log('sliding')}
+    renderThumbComponent={() => <SliderThumb />}
     // not compatible with current version
     // check: https://github.com/miblanchard/react-native-slider/pull/363
     // renderThumbComponent={[

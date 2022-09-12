@@ -8,13 +8,13 @@ import { SvgProps } from 'react-native-svg';
 type MapMarkerProps = {
   location: LatLng;
   source?: number | number | React.FC<SvgProps>;
-  pressed?: boolean;
+  selected?: boolean;
 };
 
 const MapMarker = ({
   location,
   source,
-  pressed = false,
+  selected = false,
 
   ...props
 }: MapMarkerProps & Omit<MarkerProps, 'coordinate'>) => {
@@ -24,11 +24,12 @@ const MapMarker = ({
         latitude: location.latitude,
         longitude: location.longitude,
       }}
-      zIndex={1}
       {...props}
     >
       <Image
-        source={source ?? (pressed ? images.mapMarkerYellow : images.mapMarker)}
+        source={
+          source ?? (selected ? images.mapMarkerYellow : images.mapMarker)
+        }
         width={styles.image.width}
         height={styles.image.height}
       />
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
 export const MemoizedMapMarker = React.memo(
   MapMarker,
   (prevProps, nextProps) =>
-    prevProps.pressed === nextProps.pressed &&
+    prevProps.selected === nextProps.selected &&
     prevProps.source === nextProps.source,
 );
 export default MapMarker;

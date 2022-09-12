@@ -24,7 +24,7 @@ const MenuModal = ({ hideCallback }: MenuModalProps) => {
 
     setTimeout(
       () => navigation.reset({ index: 0, routes: [{ name: 'Login' }] }),
-      400,
+      200,
     );
   };
 

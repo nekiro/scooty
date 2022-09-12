@@ -3,8 +3,6 @@ import ReactModal, {
   ModalProps as ReactModalProps,
 } from 'react-native-modal';
 import { StyleProp, View, ViewStyle } from 'react-native';
-import BackgroundGradient from './BackgroundGradient';
-import colors from '../lib/colorScheme';
 
 export type ModalPreset = 'bottom' | 'center';
 
@@ -44,6 +42,7 @@ const presetInfo: { bottom: PresetInfo; center: PresetInfo } = {
         paddingBottom: 50,
         paddingHorizontal: 20,
         borderRadius: 20,
+        backgroundColor: '#191A1A',
       },
       modal: {
         margin: 0,
@@ -61,22 +60,23 @@ const presetInfo: { bottom: PresetInfo; center: PresetInfo } = {
   },
   center: {
     animation: {
-      in: 'slideInUp',
+      in: 'pulse',
       inTiming: 600,
-      out: 'slideOutDown',
-      outTiming: 600,
+      out: 'fadeOut',
+      outTiming: 400,
     },
-    backdropOpacity: 0.8,
+    backdropOpacity: 0.9,
     style: {
       gradient: {
         flex: 0,
         borderRadius: 11,
+        backgroundColor: '#191A1A',
         // borderColor: colors.yellow,
         // borderWidth: 0.5,
         padding: 15,
-        shadowColor: colors.yellow,
-        shadowRadius: 5,
-        shadowOpacity: 1,
+        shadowColor: '#eef511',
+        shadowRadius: 100,
+        shadowOpacity: 0.15,
       },
     },
   },
@@ -111,12 +111,12 @@ const Modal = ({
       backdropOpacity={info.backdropOpacity}
       {...props}
     >
-      <BackgroundGradient style={info.style.gradient}>
+      <View style={info.style.gradient}>
         {info.useModalLine && (
           <View pointerEvents="none" style={info.style.modalLine} />
         )}
         {children}
-      </BackgroundGradient>
+      </View>
     </ReactModal>
   );
 };

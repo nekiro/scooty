@@ -21,7 +21,12 @@ const PressableIcon = ({
   height,
   onPress,
 }: PressableIconProps & IconProps) => (
-  <Pressable style={[styles.container, style]} onPress={onPress}>
+  <Pressable
+    style={({ pressed }) => {
+      return [styles.container, style, pressed ? { opacity: 0.8 } : {}];
+    }}
+    onPress={onPress}
+  >
     <Icon
       source={source}
       style={[styles.image, iconStyle]}

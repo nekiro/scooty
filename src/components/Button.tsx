@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -6,7 +5,6 @@ import {
   Text,
   ViewStyle,
   StyleProp,
-  PressableStateCallbackType,
   TextStyle,
 } from 'react-native';
 import colors from '../lib/colorScheme';
@@ -30,23 +28,17 @@ const Button = ({
   textStyle,
   glow = false,
 }: ButtonProps) => {
-  const getStyle = useCallback(
-    (state: PressableStateCallbackType) => {
-      return [
+  return (
+    <Pressable
+      style={(state) => [
         styles.base,
-        // state.pressed
-        //   ? { ...styles[variant], backgroundColor: colors.darkYellow }
-        //   : styles[variant],
-        styles[variant],
+        state.pressed ? { ...styles[variant], opacity: 0.8 } : styles[variant],
+
         style,
         glow ? styles.glow : undefined,
-      ];
-    },
-    [style],
-  );
-
-  return (
-    <Pressable style={getStyle} onPress={onPress}>
+      ]}
+      onPress={onPress}
+    >
       {typeof children === 'string' ? (
         <Text style={[styles.baseText, styles[`${variant}Text`], textStyle]}>
           {children}

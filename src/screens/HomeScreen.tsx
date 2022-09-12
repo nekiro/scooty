@@ -79,7 +79,7 @@ const HomeScreen = () => {
   return (
     <>
       <StatusBar style="light" />
-      <BackgroundGradient
+      <View
         style={styles.mainContainer}
         onLayout={() => {
           if (!location || !mapLoaded) {
@@ -129,7 +129,7 @@ const HomeScreen = () => {
                     identifier={scooter.id}
                     location={scooter.coordinate}
                     onPress={onMarkerPress}
-                    pressed={chosenScooter?.id === scooter.id}
+                    selected={chosenScooter?.id === scooter.id}
                   />
                 ))}
               </MapView>
@@ -162,7 +162,7 @@ const HomeScreen = () => {
             {content}
           </Modal>
         </SafeAreaView>
-      </BackgroundGradient>
+      </View>
     </>
   );
 };
@@ -170,6 +170,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    backgroundColor: '#191A1A',
   },
   arrow: {
     alignSelf: 'flex-end',
@@ -208,6 +209,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     flexDirection: 'row',
+    backgroundColor: '#191A1A',
   },
   map: { flex: 1 },
 });

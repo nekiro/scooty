@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     opacity: 0.5,
+    lineHeight: 20,
     marginTop: 5,
   },
   textContainer: {
     alignItems: 'center',
-    width: '65%',
     marginTop: 20,
   },
   header: {
