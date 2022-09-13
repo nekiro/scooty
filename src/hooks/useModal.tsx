@@ -1,47 +1,45 @@
-import { useState } from 'react';
+import { Dispatch, useReducer } from 'react';
 import { ModalPreset } from '../components/Modal';
 
-export type ModalContext = {
-  show: () => void;
-  hide: () => void;
-  toggle: () => void;
+export type ModalContext = [ModalState, Dispatch<ModalAction>];
+
+export type ModalAction =
+  | { type: 'SHOW' }
+  | { type: 'HIDE' }
+  | { type: 'SET_CONTENT'; content: JSX.Element | undefined; show?: boolean }
+  | { type: 'SET_PRESET'; preset: ModalPreset };
+
+export type ModalState = {
   visible: boolean;
-  setContent: (content: JSX.Element | undefined) => void;
   content: JSX.Element | undefined;
-  hasContent: () => boolean;
-  setContentAndShow: (content: JSX.Element) => void;
   preset: ModalPreset;
-  setPreset: (preset: ModalPreset) => void;
+};
+
+const reducer = (state: ModalState, action: ModalAction) => {
+  switch (action.type) {
+    case 'SHOW':
+      return { ...state, visible: true };
+    case 'HIDE':
+      return { ...state, visible: false };
+    case 'SET_CONTENT':
+      return {
+        ...state,
+        content: action.content,
+        visible: action.show ?? false,
+      };
+    case 'SET_PRESET':
+      return { ...state, preset: action.preset };
+    default:
+      return state;
+  }
 };
 
 export const useModal = (preset: ModalPreset = 'bottom'): ModalContext => {
-  const [visible, setVisible] = useState(false);
-  const [content, setContentState] = useState<JSX.Element | undefined>();
-  const [presetState, setPresetState] = useState<ModalPreset>(preset);
+  const [state, dispatch] = useReducer(reducer, {
+    visible: false,
+    content: undefined,
+    preset,
+  });
 
-  const show = () => setVisible(true);
-  const hide = () => setVisible(false);
-  const toggle = () => setVisible(!visible);
-  const hasContent = () => !!content;
-  const setContent = (content: JSX.Element | undefined) => {
-    setContentState(content);
-  };
-  const setContentAndShow = (content: JSX.Element) => {
-    setContent(content);
-    show();
-  };
-  const setPreset = (preset: ModalPreset) => setPresetState(preset);
-
-  return {
-    show,
-    hide,
-    toggle,
-    visible,
-    content,
-    setContent,
-    hasContent,
-    setContentAndShow,
-    preset: presetState,
-    setPreset,
-  };
+  return [state, dispatch];
 };

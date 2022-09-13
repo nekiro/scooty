@@ -24,14 +24,14 @@ import { StatusBar } from 'expo-status-bar';
 const HomeScreen = () => {
   const { vh } = useDimensions();
   const { location } = useLocation();
-  const { setContentAndShow, hide, visible, content } = useModal();
+  const [{ visible, content }, dispatch] = useModal();
   const [chosenScooter, setChosenScooter] = useState<ScooterData | undefined>();
   const [mapLoaded, setMapLoaded] = useState(false);
   const mapRef = useRef<MapView>(null);
   const { show: showSplash, hide: hideSplash } = useSplash();
 
   const MenuModalComponent = useMemo(
-    () => <MenuModal hideCallback={hide} />,
+    () => <MenuModal hideCallback={() => dispatch({ type: 'HIDE' })} />,
     [],
   );
   const FilterModalComponent = useMemo(() => <FiltersModal />, []);
@@ -42,8 +42,18 @@ const HomeScreen = () => {
     }
   }, [location, mapLoaded]);
 
-  const showFilters = () => setContentAndShow(FilterModalComponent);
-  const showMenu = () => setContentAndShow(MenuModalComponent);
+  const showFilters = () =>
+    dispatch({
+      type: 'SET_CONTENT',
+      content: FilterModalComponent,
+      show: true,
+    });
+  const showMenu = () =>
+    dispatch({
+      type: 'SET_CONTENT',
+      content: MenuModalComponent,
+      show: true,
+    });
   const onArrowPress = () =>
     location && mapRef.current?.animateToRegion(getRegion(location), 600);
   const onRideButtonPress = () => true; // TODO
@@ -52,7 +62,7 @@ const HomeScreen = () => {
       setChosenScooter(undefined);
     }
 
-    hide();
+    dispatch({ type: 'HIDE' });
   };
 
   const onMarkerPress = (
@@ -67,7 +77,11 @@ const HomeScreen = () => {
 
     if (scooter) {
       setChosenScooter(scooter);
-      setContentAndShow(<ScooterModal scooter={scooter} />);
+      dispatch({
+        type: 'SET_CONTENT',
+        content: <ScooterModal scooter={scooter} />,
+        show: true,
+      });
 
       mapRef.current?.animateToRegion(
         getRegion({ ...scooter.coordinate }),

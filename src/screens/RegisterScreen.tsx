@@ -58,6 +58,7 @@ const RegisterScreen = ({
               style={styles.mainContainer}
             >
               <LogoHeader
+                // eslint-disable-next-line react-native/no-inline-styles
                 style={[styles.header, { opacity: keyboardVisible ? 0 : 10 }]}
               >
                 Hello
@@ -95,7 +96,12 @@ const RegisterScreen = ({
                 </View>
                 <View>
                   <Pressable
-                    style={styles.loginContainer}
+                    style={({ pressed }) => {
+                      return [
+                        styles.loginContainer,
+                        { opacity: pressed ? 0.9 : 1 },
+                      ];
+                    }}
                     onPress={onLoginPress}
                   >
                     <Text style={[styles.text, styles.loginText]}>
@@ -108,6 +114,7 @@ const RegisterScreen = ({
               <View
                 style={[
                   styles.helpCenterView,
+                  // eslint-disable-next-line react-native/no-inline-styles
                   { opacity: keyboardVisible ? 0 : 10 },
                 ]}
               >

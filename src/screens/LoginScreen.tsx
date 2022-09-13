@@ -52,7 +52,12 @@ const LoginScreen = ({
                   </VariantButton>
                 </View>
                 <Pressable
-                  style={styles.signUpContainer}
+                  style={({ pressed }) => {
+                    return [
+                      styles.signUpContainer,
+                      { opacity: pressed ? 0.9 : 1 },
+                    ];
+                  }}
                   onPress={onSignUpPress}
                 >
                   <Text style={[styles.text, styles.signUpText]}>
