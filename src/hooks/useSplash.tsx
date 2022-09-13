@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import Splash from '../components/Splash';
 
-type SplashContext = {
+export type SplashContext = {
   show: () => void;
   hide: () => void;
 };
@@ -11,7 +11,7 @@ const context = createContext<SplashContext>({
   hide: () => {},
 });
 
-export const SplashContextProvider = ({ children }: PropsWithChildren) => {
+export const SplashProvider = ({ children }: PropsWithChildren) => {
   const [visible, setVisible] = useState(true);
 
   const show = () => setVisible(true);
@@ -19,10 +19,8 @@ export const SplashContextProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <context.Provider value={{ show, hide }}>
-      <>
-        {children}
-        <Splash visible={visible} />
-      </>
+      {children}
+      <Splash visible={visible} />
     </context.Provider>
   );
 };
