@@ -22,7 +22,7 @@ type CountryCodes = { callingCode: string | number; countryCode: string };
 
 const PhoneNumberInput = ({ style }: PhoneNumberInputProps) => {
   const [pickerVisible, setPickerVisible] = useState(false);
-  const { location } = useLocation({ onUpdateLocation });
+  useLocation({ onUpdateLocation });
   const [phoneNumber, setPhoneNumber] = useState('');
   const [country, setCountry] = useState<CountryCodes>({
     callingCode: '50',
@@ -68,9 +68,7 @@ const PhoneNumberInput = ({ style }: PhoneNumberInputProps) => {
         theme={DARK_THEME}
         withCallingCode={true}
         withFilter={true}
-        countryCode={
-          location ? location.countryCode : (country.countryCode as CountryCode)
-        }
+        countryCode={country.countryCode as CountryCode}
         preferredCountries={['PL']}
         onSelect={onCountrySelect}
         onClose={onPickerClose}
