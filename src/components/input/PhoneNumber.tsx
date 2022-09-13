@@ -12,48 +12,45 @@ import CountryPicker, {
   CountryCode,
   DARK_THEME,
 } from 'react-native-country-picker-modal';
-import useLocation from '../../hooks/useLocation';
+import useLocation, { Location } from '../../hooks/useLocation';
 import colors from '../../lib/colorScheme';
 
 type PhoneNumberInputProps = {
   style?: StyleProp<TextStyle>;
 };
+type CountryCodes = { callingCode: string | number; countryCode: string };
 
 const PhoneNumberInput = ({ style }: PhoneNumberInputProps) => {
   const [pickerVisible, setPickerVisible] = useState(false);
-  const { location } = useLocation();
+  const { location } = useLocation({ onUpdateLocation });
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [country, setCountry] = useState<{
-    callingCode: string;
-    countryCode: string;
-  }>({
+  const [country, setCountry] = useState<CountryCodes>({
     callingCode: '50',
     countryCode: 'DE',
   });
 
-  // const number = useMemo(() => {
-  //   try {
-  //     return PhoneNumberUtil.getInstance().parseAndKeepRawInput(
-  //       phoneNumber,
-  //       countryCode,
-  //     );
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [phoneNumber, countryCode]);
+  function onUpdateLocation(location: Location | null) {
+    if (!location) return;
+
+    setCountry({
+      callingCode: location.callingCode,
+      countryCode: location.countryCode,
+    });
+  }
 
   const onCountryCallNumberPress = () => setPickerVisible(true);
   const onCountrySelect = (country: Country) =>
     setCountry({
-      callingCode: country.callingCode.shift() ?? '48',
+      callingCode: country.callingCode[0] ?? '48',
       countryCode: country.cca2,
     });
+
   const onPickerClose = () => setPickerVisible(false);
 
   return (
     <View style={[styles.container, style]}>
       <Text onPress={onCountryCallNumberPress} style={styles.countryCodeText}>
-        (+{location ? location.callingCode : country.callingCode})
+        (+{country.callingCode})
       </Text>
       <TextInput
         keyboardType="phone-pad"

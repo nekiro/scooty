@@ -57,7 +57,7 @@ const useLocation = ({
     const { isoCountryCode, city, country, postalCode, street, streetNumber } =
       response[0];
 
-    const formattedLocation = {
+    const formattedLocation: Location = {
       latitude,
       longitude,
       callingCode: phoneUtil.getCountryCodeForRegion(isoCountryCode as string),
