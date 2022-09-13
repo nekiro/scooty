@@ -105,7 +105,12 @@ const RegisterScreen = ({
                   </Pressable>
                 </View>
               </View>
-              <View style={styles.helpCenterView}>
+              <View
+                style={[
+                  styles.helpCenterView,
+                  { opacity: keyboardVisible ? 0 : 10 },
+                ]}
+              >
                 <Text onPress={onHelpCenterPress} style={styles.helpCenterText}>
                   Help center
                 </Text>
