@@ -20,16 +20,29 @@ import BaseTextInput from '../components/input/BaseText';
 import { isIos } from '../lib';
 import Spacer from '../components/Spacer';
 import DateInput from '../components/input/Date';
+import { useEffect, useState } from 'react';
 
 const RegisterScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Register'>) => {
-  const onHelpCenterPress = () => {
-    //
-  };
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
 
+  const onHelpCenterPress = () => {}; // TODO?
   const onLoginPress = () => navigation.navigate('Login');
   const onSignUpPress = () => navigation.navigate('Login');
+
+  useEffect(() => {
+    const didShow = Keyboard.addListener('keyboardWillShow', () =>
+      setKeyboardVisible(true),
+    );
+    const didHide = Keyboard.addListener('keyboardWillHide', () =>
+      setKeyboardVisible(false),
+    );
+    return () => {
+      didShow.remove();
+      didHide.remove();
+    };
+  }, []);
 
   return (
     <>
@@ -44,7 +57,12 @@ const RegisterScreen = ({
               behavior={isIos ? 'padding' : 'height'}
               style={styles.mainContainer}
             >
-              <LogoHeader style={styles.header}>Hello</LogoHeader>
+              <LogoHeader
+                style={[styles.header, { opacity: keyboardVisible ? 0 : 10 }]}
+              >
+                Hello
+              </LogoHeader>
+
               <View style={styles.container}>
                 <View style={styles.formView}>
                   <Text style={[styles.text, styles.phoneNumberText]}>
