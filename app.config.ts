@@ -19,7 +19,7 @@ const config: ExpoConfig = {
   entryPoint: 'src/App.tsx',
   ios: {
     config: {
-      googleMapsApiKey: 'AIzaSyDtJXmLhNgA7IQ78Pc69Sw-CV_Lyd_TPRI',
+      googleMapsApiKey: '',
     },
     bundleIdentifier: 'com.nekiro.scooty',
   },
