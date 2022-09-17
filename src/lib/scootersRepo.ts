@@ -8,24 +8,20 @@ export type ScooterData = {
 
 const scooters: ScooterData[] = [
   {
-    id: 'WAW01A',
-    coordinate: { latitude: 52.242723192503114, longitude: 21.084935663900776 },
+    id: 'US01A',
+    coordinate: { latitude: 37.33177795068115, longitude: -122.03117605512774 },
     battery: 10,
   },
   {
-    id: 'WAW02A',
-    coordinate: { latitude: 52.24424097016489, longitude: 21.077011900354172 },
+    id: 'US02A',
+    coordinate: { latitude: 37.3306859879122, longitude: -122.0307576305467 },
     battery: 20,
   },
   {
-    id: 'WAW03A',
-    coordinate: { latitude: 52.244304793602424, longitude: 21.082401460227086 },
+    id: 'US03A',
+    coordinate: { latitude: 37.33264809714939, longitude: -122.02807542169391 },
     battery: 100,
   },
-  {
-    id: 'WAW04A',
-    coordinate: { latitude: 52.244390115317636, longitude: 21.087334575289887 },
-    battery: 70,
-  },
 ];
+
 export default scooters;
