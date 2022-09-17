@@ -7,23 +7,38 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
+  Alert,
 } from 'react-native';
-import colors from '../lib/colorScheme';
-import LogoHeader from '../components/LogoHeader';
-import VariantButton from '../components/Button';
-import BackgroundGradient from '../components/BackgroundGradient';
+import colors from '../../lib/colorScheme';
+import LogoHeader from '../../components/LogoHeader';
+import VariantButton from '../../components/Button';
+import BackgroundGradient from '../../components/BackgroundGradient';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
-import PhoneNumberInput from '../components/input/PhoneNumber';
+import { RootStackParamList } from '../../App';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { isIos } from '../lib';
+import { isIos } from '../../lib';
+import Field from '../../components/Field';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { type SchemaType, schema } from './schema';
+import { formatFormErrors } from '../../lib/index';
 
-const LoginScreen = ({
+export default function LoginScreen({
   navigation,
-}: NativeStackScreenProps<RootStackParamList, 'Login'>) => {
+}: NativeStackScreenProps<RootStackParamList, 'Login'>) {
+  const { control, handleSubmit } = useForm<SchemaType>({
+    defaultValues: {
+      phone: '',
+    },
+    resolver: yupResolver(schema),
+  });
+
   const onSignUpPress = () => navigation.navigate('Register');
   const onHelpCenterPress = () => {};
-  const onLoginPress = () => navigation.navigate('Home');
+  const onLoginPress = (data: SchemaType) => {
+    // hit api in real scenario
+    navigation.navigate('Home');
+  };
 
   return (
     <>
@@ -41,9 +56,12 @@ const LoginScreen = ({
                   <Text style={[styles.text, styles.phoneNumberText]}>
                     Phone Number
                   </Text>
-                  <PhoneNumberInput />
+                  <Field type="phone" name="phone" control={control} />
                   <VariantButton
-                    onPress={onLoginPress}
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onPress={handleSubmit(onLoginPress, (errors) =>
+                      Alert.alert('Invalid data', formatFormErrors(errors)),
+                    )}
                     style={styles.button}
                     textStyle={styles.buttonText}
                     variant="solid"
@@ -77,7 +95,7 @@ const LoginScreen = ({
       </BackgroundGradient>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -129,5 +147,3 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 });
-
-export default LoginScreen;

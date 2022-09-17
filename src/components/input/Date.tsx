@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, StyleProp, TextStyle, Pressable } from 'react-native';
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -13,18 +13,23 @@ import { isAndroid, isIos } from '../../lib';
 
 type DateInputProps = {
   style?: StyleProp<TextStyle>;
+  value?: Date;
+  onChangeText?: (value: any) => void;
 };
 
 const maximumDate = new Date(new Date().getFullYear() - 16, 0, 1);
 
-const DateInput = ({ style }: DateInputProps) => {
-  const [date, setDate] = useState<Date | undefined>();
+export default function DateInput({
+  style,
+  value,
+  onChangeText,
+}: DateInputProps) {
   const [lastAction, setLastAction] = useState<Date | undefined>();
   const [interval, setIntervalState] = useState<NodeJS.Timer | undefined>();
-  const { show, hide, visible, preset } = useModal('center');
+  const [state, dispatch] = useModal('center');
 
-  const visibleRef = useRef(visible);
-  visibleRef.current = visible;
+  const visibleRef = useRef(state.visible);
+  visibleRef.current = state.visible;
 
   const actionRef = useRef(lastAction);
   actionRef.current = lastAction;
@@ -32,75 +37,69 @@ const DateInput = ({ style }: DateInputProps) => {
   const intervalRef = useRef(interval);
   intervalRef.current = interval;
 
-  useEffect(() => {
-    return () => clearInterval(interval);
+  const cancelPeriodicCheck = useCallback(() => {
+    clearInterval(intervalRef.current);
+    setIntervalState(undefined);
   }, []);
 
-  const periodicallyCheckForActions = (
-    lastAction: Date | undefined,
-    visible: boolean,
-    interval: NodeJS.Timer | undefined,
-  ) => {
-    if (!visible) {
-      clearInterval(interval);
+  useEffect(() => {
+    return cancelPeriodicCheck;
+  }, []);
+
+  const periodicallyCheckForActions = useCallback(() => {
+    if (!visibleRef.current) {
+      cancelPeriodicCheck();
       return;
     }
 
-    if (!lastAction) {
+    if (!actionRef.current) {
       return;
     }
 
-    if (new Date().getTime() - lastAction.getTime() > 1500) {
-      hide();
-      clearInterval(interval);
+    if (new Date().getTime() - actionRef.current.getTime() > 1500) {
+      dispatch({ type: 'HIDE' });
+      cancelPeriodicCheck();
     }
-  };
+  }, []);
 
-  const onChange = (event: DateTimePickerEvent, date?: Date) => {
+  const onInternalChange = (event: DateTimePickerEvent, date?: Date) => {
     if (event.type === 'dismissed') return;
 
-    setDate(date as Date);
+    onChangeText?.(date);
 
     // on android onChange is called after clicking submit button
     if (isAndroid) {
-      hide();
+      dispatch({ type: 'HIDE' });
       return;
     }
 
     setLastAction(new Date());
 
     if (!interval) {
-      setIntervalState(
-        setInterval(
-          () =>
-            periodicallyCheckForActions(
-              actionRef.current,
-              visibleRef.current,
-              intervalRef.current,
-            ),
-          500,
-        ),
-      );
+      setIntervalState(setInterval(() => periodicallyCheckForActions(), 500));
     }
   };
 
   const DatePickerComponent = (
     <DateTimePicker
-      value={date ?? new Date()}
+      value={value ?? new Date()}
       accentColor={colors.yellow}
       textColor={colors.white}
       themeVariant="dark"
       display={isIos ? 'inline' : 'default'}
-      onChange={onChange}
+      onChange={onInternalChange}
       maximumDate={maximumDate}
     />
   );
 
   return (
     <>
-      <Pressable onPressIn={show} style={[styles.container, style]}>
+      <Pressable
+        onPressIn={() => dispatch({ type: 'SHOW' })}
+        style={[styles.container, style]}
+      >
         <BaseTextInput pointerEvents="none" editable={false}>
-          {date?.toLocaleDateString().replace(/-/g, ' / ')}
+          {value?.toLocaleDateString().replace(/-/g, ' / ')}
         </BaseTextInput>
         <Image
           source={images.rightArrow}
@@ -111,25 +110,19 @@ const DateInput = ({ style }: DateInputProps) => {
       </Pressable>
 
       {isAndroid ? (
-        visible && DatePickerComponent
+        state.visible && DatePickerComponent
       ) : (
-        <Modal preset={preset} isVisible={visible} onHide={hide}>
+        <Modal
+          preset={state.preset}
+          isVisible={state.visible}
+          onHide={() => dispatch({ type: 'HIDE' })}
+        >
           {DatePickerComponent}
         </Modal>
       )}
-      {/* <Modal preset={preset} isVisible={visible} onHide={hide}>
-        <DateTimePicker
-          value={date ?? new Date()}
-          accentColor={colors.yellow}
-          themeVariant="dark"
-          display={isIos ? 'inline' : 'default'}
-          onChange={onChange}
-          maximumDate={maximumDate}
-        />
-      </Modal> */}
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -141,5 +134,3 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 });
-
-export default DateInput;

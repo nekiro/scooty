@@ -94,6 +94,7 @@ const Modal = ({
   ...props
 }: ModalProps & Partial<ReactModalProps>) => {
   const info = presetInfo[preset];
+  if (!info) return null;
 
   return (
     <ReactModal

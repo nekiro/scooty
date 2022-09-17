@@ -15,13 +15,13 @@ type BaseTextInputProps = {
   children?: JSX.Element | JSX.Element[] | string;
 };
 
-const BaseTextInput = ({
+export default function BaseTextInput({
   style,
   keyboardType = 'default',
   placeholder,
   children,
   ...props
-}: BaseTextInputProps & Partial<TextInputProps>) => {
+}: BaseTextInputProps & Partial<TextInputProps>) {
   return (
     <TextInput
       style={[styles.input, style]}
@@ -33,7 +33,7 @@ const BaseTextInput = ({
       {children}
     </TextInput>
   );
-};
+}
 
 const styles = StyleSheet.create({
   input: {
@@ -48,5 +48,3 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
 });
-
-export default BaseTextInput;

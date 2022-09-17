@@ -1,3 +1,4 @@
+import { FieldErrorsImpl } from 'react-hook-form';
 import { Platform } from 'react-native';
 import { LatLng } from 'react-native-maps';
 import { Location } from '../hooks/useLocation';
@@ -14,3 +15,11 @@ export const getRegion = (
   latitudeDelta: delta,
   longitudeDelta: delta,
 });
+
+export const formatFormErrors = (
+  errors: FieldErrorsImpl,
+  delimeter: string = '\n',
+) =>
+  Object.values(errors)
+    .map((err) => err?.message)
+    .join(delimeter);

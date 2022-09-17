@@ -8,28 +8,44 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Pressable,
+  Alert,
 } from 'react-native';
-import colors from '../lib/colorScheme';
-import LogoHeader from '../components/LogoHeader';
-import VariantButton from '../components/Button';
-import BackgroundGradient from '../components/BackgroundGradient';
+import colors from '../../lib/colorScheme';
+import LogoHeader from '../../components/LogoHeader';
+import VariantButton from '../../components/Button';
+import BackgroundGradient from '../../components/BackgroundGradient';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
-import PhoneNumberInput from '../components/input/PhoneNumber';
-import BaseTextInput from '../components/input/BaseText';
-import { isIos } from '../lib';
-import Spacer from '../components/Spacer';
-import DateInput from '../components/input/Date';
+import { RootStackParamList } from '../../App';
+import { isIos } from '../../lib';
+import Spacer from '../../components/Spacer';
 import { useEffect, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { schema, type SchemaType } from './schema';
+import Field from '../../components/Field';
+import { formatFormErrors } from '../../lib/index';
 
-const RegisterScreen = ({
+export default function RegisterScreen({
   navigation,
-}: NativeStackScreenProps<RootStackParamList, 'Register'>) => {
+}: NativeStackScreenProps<RootStackParamList, 'Register'>) {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const { control, handleSubmit } = useForm<SchemaType>({
+    defaultValues: {
+      phone: '',
+      name: '',
+      surname: '',
+      birthday: '',
+    },
+    resolver: yupResolver(schema),
+  });
 
   const onHelpCenterPress = () => {}; // TODO?
   const onLoginPress = () => navigation.navigate('Login');
-  const onSignUpPress = () => navigation.navigate('Login');
+  const onSignUpPress = (data: SchemaType) => {
+    console.log(data);
+
+    // navigation.navigate('Login');
+  };
 
   useEffect(() => {
     const didShow = Keyboard.addListener('keyboardWillShow', () =>
@@ -69,24 +85,30 @@ const RegisterScreen = ({
                   <Text style={[styles.text, styles.phoneNumberText]}>
                     Phone Number
                   </Text>
-                  <PhoneNumberInput />
+                  <Field type="phone" name="phone" control={control} />
                   <View style={styles.sideBySideContainer}>
                     <View style={styles.inputContainer}>
                       <Text style={styles.text}>Name</Text>
-                      <BaseTextInput />
+                      <Field type="text" name="name" control={control} />
                     </View>
                     <Spacer />
                     <View style={styles.inputContainer}>
                       <Text style={styles.text}>Surname</Text>
-                      <BaseTextInput />
+                      <Field type="text" name="surname" control={control} />
                     </View>
                   </View>
                   <Text style={[styles.text, styles.birthdayText]}>
                     Birthday
                   </Text>
-                  <DateInput />
+                  <Field type="date" name="date" control={control} />
                   <VariantButton
-                    onPress={onSignUpPress}
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onPress={handleSubmit(onSignUpPress, (errors) => {
+                      Alert.alert(
+                        "Something's wrong...",
+                        formatFormErrors(errors),
+                      );
+                    })}
                     style={styles.button}
                     variant="solid"
                     textStyle={styles.buttonText}
@@ -96,12 +118,10 @@ const RegisterScreen = ({
                 </View>
                 <View>
                   <Pressable
-                    style={({ pressed }) => {
-                      return [
-                        styles.loginContainer,
-                        { opacity: pressed ? 0.9 : 1 },
-                      ];
-                    }}
+                    style={({ pressed }) => [
+                      styles.loginContainer,
+                      { opacity: pressed ? 0.9 : 1 },
+                    ]}
                     onPress={onLoginPress}
                   >
                     <Text style={[styles.text, styles.loginText]}>
@@ -128,7 +148,7 @@ const RegisterScreen = ({
       </BackgroundGradient>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -189,5 +209,3 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 });
-
-export default RegisterScreen;

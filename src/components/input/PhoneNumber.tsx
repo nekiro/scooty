@@ -6,6 +6,7 @@ import {
   View,
   Text,
   TextInput,
+  TextInputProps,
 } from 'react-native';
 import CountryPicker, {
   Country,
@@ -20,10 +21,13 @@ type PhoneNumberInputProps = {
 };
 type CountryCodes = { callingCode: string | number; countryCode: string };
 
-const PhoneNumberInput = ({ style }: PhoneNumberInputProps) => {
+export default function PhoneNumberInput({
+  style,
+  onChangeText,
+  value,
+}: PhoneNumberInputProps & TextInputProps) {
   const [pickerVisible, setPickerVisible] = useState(false);
   useLocation({ onUpdateLocation });
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [country, setCountry] = useState<CountryCodes>({
     callingCode: '50',
     countryCode: 'DE',
@@ -54,12 +58,12 @@ const PhoneNumberInput = ({ style }: PhoneNumberInputProps) => {
       </Text>
       <TextInput
         keyboardType="phone-pad"
-        value={phoneNumber}
+        value={value}
         onChangeText={(text) => {
-          setPhoneNumber(
-            phoneNumber.length < text.length
-              ? text.replace(/[^0-9]/g, '')
-              : text,
+          if (value === undefined) return;
+
+          onChangeText?.(
+            value.length < text.length ? text.replace(/[^0-9]/g, '') : text,
           );
         }}
         style={styles.input}
@@ -76,7 +80,7 @@ const PhoneNumberInput = ({ style }: PhoneNumberInputProps) => {
       />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -102,5 +106,3 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
 });
-
-export default PhoneNumberInput;
