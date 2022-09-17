@@ -11,36 +11,36 @@ type SliderProps = {
   value: number[] | string[];
 };
 
-const Slider = ({
+export default function Slider({
   onValueChange,
   value,
   minimumValue,
   maximumValue,
-}: SliderProps & Optional<ReactNativeSliderProps, 'animationType'>) => (
-  <ReactNativeSlider
-    value={value}
-    onValueChange={onValueChange}
-    minimumValue={minimumValue}
-    maximumValue={maximumValue}
-    minimumTrackTintColor={colors.darkYellow}
-    maximumTrackTintColor={colors.lightGray}
-    trackStyle={styles.track}
-    thumbTintColor={colors.yellow}
-    step={1}
-    onSlidingStart={() => console.log('sliding')}
-    renderThumbComponent={() => <SliderThumb />}
-    // not compatible with current version
-    // check: https://github.com/miblanchard/react-native-slider/pull/363
-    // renderThumbComponent={[
-    //   () => (<SliderThumb value={value[0]} />) as ReactNode,
-    //   () => (<SliderThumb value={value[1]} />) as ReactNode,
-    // ]}
-  />
-);
+}: SliderProps & Optional<ReactNativeSliderProps, 'animationType'>) {
+  return (
+    <ReactNativeSlider
+      value={value}
+      onValueChange={onValueChange}
+      minimumValue={minimumValue}
+      maximumValue={maximumValue}
+      minimumTrackTintColor={colors.darkYellow}
+      maximumTrackTintColor={colors.lightGray}
+      trackStyle={styles.track}
+      thumbTintColor={colors.yellow}
+      step={1}
+      onSlidingStart={() => console.log('sliding')}
+      renderThumbComponent={() => <SliderThumb />}
+      // not compatible with current version
+      // check: https://github.com/miblanchard/react-native-slider/pull/363
+      // renderThumbComponent={[
+      //   () => (<SliderThumb value={value[0]} />) as ReactNode,
+      //   () => (<SliderThumb value={value[1]} />) as ReactNode,
+      // ]}
+    />
+  );
+}
 
 const styles = StyleSheet.create({
   track: { height: 7 },
   thumb: { height: 17, width: 17 },
 });
-
-export default Slider;

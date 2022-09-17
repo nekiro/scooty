@@ -5,7 +5,7 @@ import MenuIconOption from '../../components/MenuIconOption';
 import Text from '../../components/Text';
 import VariantButton from '../../components/Button';
 import { ScooterData } from '../../lib/scootersRepo';
-import { useModal } from '../../hooks/useModal';
+import useModal from '../../hooks/useModal';
 import RoadmapModal from './RoadmapModal';
 import Modal from '../../components/Modal';
 import { isIos } from '../../lib';
@@ -14,11 +14,20 @@ type ScooterModalProps = {
   scooter?: ScooterData;
 };
 
-const ScooterModal = ({ scooter }: ScooterModalProps) => {
-  const { setContentAndShow, hide, visible, content } = useModal();
+export default function ScooterModal({ scooter }: ScooterModalProps) {
+  const [{ content, visible }, dispatch] = useModal();
 
   const onReservationPress = () =>
-    setContentAndShow(<RoadmapModal onCancelPress={hide} onDrawPress={hide} />);
+    dispatch({
+      type: 'SET_CONTENT',
+      content: (
+        <RoadmapModal
+          onCancelPress={() => dispatch({ type: 'HIDE' })}
+          onDrawPress={() => dispatch({ type: 'HIDE' })}
+        />
+      ),
+      show: true,
+    });
 
   if (!scooter) {
     return null;
@@ -87,12 +96,16 @@ const ScooterModal = ({ scooter }: ScooterModalProps) => {
           </VariantButton>
         </View>
       </View>
-      <Modal preset="center" isVisible={visible} onHide={hide}>
+      <Modal
+        preset="center"
+        isVisible={visible}
+        onHide={() => dispatch({ type: 'HIDE' })}
+      >
         {content}
       </Modal>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -122,5 +135,3 @@ const styles = StyleSheet.create({
   ringBtn: { marginRight: 10 },
   reservationBtn: { marginLeft: 10 },
 });
-
-export default ScooterModal;

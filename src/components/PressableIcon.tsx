@@ -13,28 +13,30 @@ export type PressableIconProps = {
   onPress?: (event: GestureResponderEvent) => void;
 };
 
-const PressableIcon = ({
+export default function PressableIcon({
   style,
   source,
   iconStyle,
   width,
   height,
   onPress,
-}: PressableIconProps & IconProps) => (
-  <Pressable
-    style={({ pressed }) => {
-      return [styles.container, style, pressed ? { opacity: 0.8 } : {}];
-    }}
-    onPress={onPress}
-  >
-    <Icon
-      source={source}
-      style={[styles.image, iconStyle]}
-      width={width}
-      height={height}
-    />
-  </Pressable>
-);
+}: PressableIconProps & IconProps) {
+  return (
+    <Pressable
+      style={({ pressed }) => {
+        return [styles.container, style, pressed ? { opacity: 0.8 } : {}];
+      }}
+      onPress={onPress}
+    >
+      <Icon
+        source={source}
+        style={[styles.image, iconStyle]}
+        width={width}
+        height={height}
+      />
+    </Pressable>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -45,5 +47,3 @@ const styles = StyleSheet.create({
     alignContent: 'stretch',
   },
 });
-
-export default PressableIcon;

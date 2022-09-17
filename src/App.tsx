@@ -58,14 +58,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const AppWithSplashProvider = () => {
+export default function AppWithSplashProvider() {
   return (
     <SplashProvider>
       <App />
     </SplashProvider>
   );
-};
+}
 
 registerRootComponent(AppWithSplashProvider);
-
-export default AppWithSplashProvider;

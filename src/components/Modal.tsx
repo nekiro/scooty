@@ -87,12 +87,12 @@ type ModalProps = {
   onHide?: () => void;
 };
 
-const Modal = ({
+export default function Modal({
   preset,
   onHide,
   children,
   ...props
-}: ModalProps & Partial<ReactModalProps>) => {
+}: ModalProps & Partial<ReactModalProps>) {
   const info = presetInfo[preset];
   if (!info) return null;
 
@@ -120,6 +120,4 @@ const Modal = ({
       </View>
     </ReactModal>
   );
-};
-
-export default Modal;
+}

@@ -8,9 +8,9 @@ import { RootStackParamList } from '../App';
 import { images, logo } from '../assets';
 import Image from '../components/Image';
 
-const OnboardingScreen = ({
+export default function OnboardingScreen({
   navigation,
-}: NativeStackScreenProps<RootStackParamList, 'Onboarding'>) => {
+}: NativeStackScreenProps<RootStackParamList, 'Onboarding'>) {
   const onLoginPress = () =>
     navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
   const onSignUpPress = () =>
@@ -62,7 +62,7 @@ const OnboardingScreen = ({
       </ImageBackground>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   content: {
@@ -93,5 +93,3 @@ const styles = StyleSheet.create({
     lineHeight: 45,
   },
 });
-
-export default OnboardingScreen;

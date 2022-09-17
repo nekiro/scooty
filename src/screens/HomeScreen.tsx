@@ -8,7 +8,7 @@ import { MemoizedMapMarker } from '../components/MapMarker';
 import PressableIcon from '../components/PressableIcon';
 import MenuModal from './modals/MenuModal';
 import FiltersModal from './modals/FiltersModal';
-import { useModal } from '../hooks/useModal';
+import useModal from '../hooks/useModal';
 import ScooterModal from './modals/ScooterModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getRegion, isAndroid, isIos } from '../lib';
@@ -21,7 +21,7 @@ import scooters, { ScooterData } from '../lib/scootersRepo';
 import useSplash from '../hooks/useSplash';
 import { StatusBar } from 'expo-status-bar';
 
-const HomeScreen = () => {
+export default function HomeScreen() {
   const { vh } = useDimensions();
   const { location } = useLocation();
   const [{ visible, content }, dispatch] = useModal();
@@ -179,7 +179,7 @@ const HomeScreen = () => {
       </View>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -227,5 +227,3 @@ const styles = StyleSheet.create({
   },
   map: { flex: 1 },
 });
-
-export default HomeScreen;

@@ -25,8 +25,6 @@ export const SplashProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-const useSplash = () => {
+export default function useSplash() {
   return useContext(context);
-};
-
-export default useSplash;
+}

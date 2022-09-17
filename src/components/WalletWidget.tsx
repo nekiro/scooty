@@ -24,31 +24,33 @@ const WalletLogo = () => (
   </View>
 );
 
-const WalletWidget = ({
+export default function WalletWidget({
   name,
   money,
   style,
   onPress,
-}: WalletWidgetProps & ViewProps) => (
-  <Pressable onPress={onPress}>
-    <View style={[styles.container, style]}>
-      <Image source={images.bigLetterS} style={styles.letter}></Image>
-      <View style={styles.rowContainer}>
-        <Text>{name}</Text>
-        <WalletLogo />
+}: WalletWidgetProps & ViewProps) {
+  return (
+    <Pressable onPress={onPress}>
+      <View style={[styles.container, style]}>
+        <Image source={images.bigLetterS} style={styles.letter}></Image>
+        <View style={styles.rowContainer}>
+          <Text>{name}</Text>
+          <WalletLogo />
+        </View>
+        <View style={[styles.rowContainer, styles.bottomRowContainer]}>
+          <Text style={styles.money}>{money}</Text>
+          <Icon
+            height={36}
+            width={36}
+            style={styles.goArrow}
+            source={icons.goArrow}
+          />
+        </View>
       </View>
-      <View style={[styles.rowContainer, styles.bottomRowContainer]}>
-        <Text style={styles.money}>{money}</Text>
-        <Icon
-          height={36}
-          width={36}
-          style={styles.goArrow}
-          source={icons.goArrow}
-        />
-      </View>
-    </View>
-  </Pressable>
-);
+    </Pressable>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -87,5 +89,3 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
 });
-
-export default WalletWidget;

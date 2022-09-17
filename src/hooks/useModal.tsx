@@ -34,7 +34,7 @@ const reducer = (state: ModalState, action: ModalAction) => {
   }
 };
 
-export const useModal = (preset: ModalPreset = 'bottom'): ModalContext => {
+export default function useModal(preset: ModalPreset = 'bottom'): ModalContext {
   const [state, dispatch] = useReducer(reducer, {
     visible: false,
     content: undefined,
@@ -42,4 +42,4 @@ export const useModal = (preset: ModalPreset = 'bottom'): ModalContext => {
   });
 
   return [state, dispatch];
-};
+}

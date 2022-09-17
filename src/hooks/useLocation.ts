@@ -28,10 +28,10 @@ type UseLocationProps = {
   onUpdateLocation?: (location: Location | null) => void;
 };
 
-const useLocation = ({
+export default function useLocation({
   watchLocation = false,
   onUpdateLocation,
-}: UseLocationProps = {}) => {
+}: UseLocationProps = {}) {
   const [location, setLocation] = useState<Location | null>();
   const [locationSubscription, setLocationSubscription] =
     useState<LocationSubscription | null>(null);
@@ -104,6 +104,4 @@ const useLocation = ({
   }, []);
 
   return { location, updateLocation };
-};
-
-export default useLocation;
+}

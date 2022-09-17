@@ -8,7 +8,7 @@ type LogoHeaderProps = {
   style?: StyleProp<ViewStyle>;
 };
 
-const LogoHeader = ({ children, style }: LogoHeaderProps) => {
+export default function LogoHeader({ children, style }: LogoHeaderProps) {
   return (
     <View style={[styles.container, style]}>
       <Image source={logo.light} style={styles.logo} height={50} width={200} />
@@ -17,7 +17,7 @@ const LogoHeader = ({ children, style }: LogoHeaderProps) => {
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -33,5 +33,3 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
 });
-
-export default LogoHeader;

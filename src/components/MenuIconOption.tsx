@@ -20,7 +20,7 @@ type MenuIconOptionPros = {
   onPress?: (event: GestureResponderEvent) => void;
 };
 
-const MenuIconOption = ({
+export default function MenuIconOption({
   children,
   iconSource,
   height = 40,
@@ -28,7 +28,7 @@ const MenuIconOption = ({
   style,
   textStyle,
   onPress,
-}: MenuIconOptionPros & ViewProps) => {
+}: MenuIconOptionPros & ViewProps) {
   const BaseComponent = () => (
     <View style={[styles.container, style]}>
       <Icon height={height} width={width} source={iconSource} />
@@ -54,7 +54,7 @@ const MenuIconOption = ({
   ) : (
     <BaseComponent />
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -65,5 +65,3 @@ const styles = StyleSheet.create({
   },
   text: { color: colors.white, marginLeft: 30, fontSize: 20 },
 });
-
-export default MenuIconOption;

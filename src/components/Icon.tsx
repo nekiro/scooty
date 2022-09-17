@@ -12,14 +12,21 @@ export type IconProps = {
   height?: number | string;
 };
 
-const Icon = ({ source, style, width = 36, height = 36 }: IconProps) => (
-  <Image
-    source={source}
-    width={width}
-    height={height}
-    style={[styles.image, style]}
-  />
-);
+export default function Icon({
+  source,
+  style,
+  width = 36,
+  height = 36,
+}: IconProps) {
+  return (
+    <Image
+      source={source}
+      width={width}
+      height={height}
+      style={[styles.image, style]}
+    />
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -30,5 +37,3 @@ const styles = StyleSheet.create({
     alignContent: 'stretch',
   },
 });
-
-export default Icon;

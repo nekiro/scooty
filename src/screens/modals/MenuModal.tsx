@@ -11,7 +11,7 @@ type MenuModalProps = {
   hideCallback?: () => void;
 };
 
-const MenuModal = ({ hideCallback }: MenuModalProps) => {
+export default function MenuModal({ hideCallback }: MenuModalProps) {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -48,7 +48,7 @@ const MenuModal = ({ hideCallback }: MenuModalProps) => {
       <WalletWidget style={styles.wallet} name="John Doe" money="200.00€" />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -58,5 +58,3 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
-export default MenuModal;

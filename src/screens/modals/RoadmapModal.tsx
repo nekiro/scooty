@@ -9,7 +9,10 @@ type RoadmapModalProps = {
   onCancelPress?: () => void;
 };
 
-const RoadmapModal = ({ onDrawPress, onCancelPress }: RoadmapModalProps) => {
+export default function RoadmapModal({
+  onDrawPress,
+  onCancelPress,
+}: RoadmapModalProps) {
   return (
     <>
       <View style={styles.container}>
@@ -34,7 +37,7 @@ const RoadmapModal = ({ onDrawPress, onCancelPress }: RoadmapModalProps) => {
       </View>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -66,5 +69,3 @@ const styles = StyleSheet.create({
     fontFamily: 'CeraProBold',
   },
 });
-
-export default RoadmapModal;

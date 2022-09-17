@@ -20,14 +20,14 @@ type ButtonProps = {
   glow?: boolean;
 };
 
-const Button = ({
+export default function Button({
   variant,
   onPress,
   children,
   style,
   textStyle,
   glow = false,
-}: ButtonProps) => {
+}: ButtonProps) {
   return (
     <Pressable
       style={(state) => [
@@ -48,7 +48,7 @@ const Button = ({
       )}
     </Pressable>
   );
-};
+}
 
 const styles = StyleSheet.create({
   base: {
@@ -87,5 +87,3 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
   },
 });
-
-export default Button;

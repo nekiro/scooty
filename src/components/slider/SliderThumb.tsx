@@ -3,7 +3,7 @@ import Text from '../Text';
 
 type SliderThumbProps = { value?: number | string | number[] | string[] };
 
-const SliderThumb = ({ value }: SliderThumbProps) => {
+export default function SliderThumb({ value }: SliderThumbProps) {
   return value ? (
     <View style={styles.container}>
       <View style={styles.thumb} />
@@ -12,7 +12,7 @@ const SliderThumb = ({ value }: SliderThumbProps) => {
   ) : (
     <View style={styles.thumb} />
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -33,5 +33,3 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
 });
-
-export default SliderThumb;

@@ -7,7 +7,7 @@ import colors from '../../lib/colorScheme';
 import BaseTextInput from './BaseText';
 import Image from '../Image';
 import { images } from '../../assets';
-import { useModal } from '../../hooks/useModal';
+import useModal from '../../hooks/useModal';
 import Modal from '../Modal';
 import { isAndroid, isIos } from '../../lib';
 

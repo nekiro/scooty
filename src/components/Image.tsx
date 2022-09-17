@@ -11,12 +11,12 @@ type ImageProps = {
   height?: number | string;
 };
 
-const Image = ({
+export default function Image({
   style,
   source,
   width,
   height,
-}: ImageProps & Partial<Omit<ReactNativeImageProps, 'source'>>) => {
+}: ImageProps & Partial<Omit<ReactNativeImageProps, 'source'>>) {
   if (typeof source === 'number') {
     // require for images returns numbers
     return <ReactNativeImage source={source} style={style} />;
@@ -30,6 +30,4 @@ const Image = ({
       {...(height ? { height } : {})}
     />
   );
-};
-
-export default Image;
+}

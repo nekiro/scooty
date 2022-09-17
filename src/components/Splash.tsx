@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react';
 import Modal from 'react-native-modal';
 import { StatusBar } from 'expo-status-bar';
 
-const Splash = ({ visible }: { visible: boolean }) => {
+export default function Splash({ visible }: { visible: boolean }) {
   const { vh, vw, height } = useDimensions();
 
   const fadeAnim = useRef(new Animated.Value(0.3)).current;
@@ -60,7 +60,7 @@ const Splash = ({ visible }: { visible: boolean }) => {
       </Modal>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -69,5 +69,3 @@ const styles = StyleSheet.create({
   },
   modal: { margin: 0 },
 });
-
-export default Splash;

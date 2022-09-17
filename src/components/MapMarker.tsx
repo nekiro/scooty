@@ -11,13 +11,13 @@ type MapMarkerProps = {
   selected?: boolean;
 };
 
-const MapMarker = ({
+export default function MapMarker({
   location,
   source,
   selected = false,
 
   ...props
-}: MapMarkerProps & Omit<MarkerProps, 'coordinate'>) => {
+}: MapMarkerProps & Omit<MarkerProps, 'coordinate'>) {
   return (
     <Marker
       coordinate={{
@@ -35,7 +35,7 @@ const MapMarker = ({
       />
     </Marker>
   );
-};
+}
 
 const styles = StyleSheet.create({
   image: {
@@ -50,4 +50,3 @@ export const MemoizedMapMarker = React.memo(
     prevProps.selected === nextProps.selected &&
     prevProps.source === nextProps.source,
 );
-export default MapMarker;

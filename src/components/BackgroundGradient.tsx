@@ -7,13 +7,13 @@ type BackgroundGradientProps = {
   locations?: number[];
 };
 
-const BackgroundGradient = ({
+export default function BackgroundGradient({
   children,
   style,
   colors = ['#191A1A', '#181818'],
   locations = [0, 0.8],
   ...props
-}: BackgroundGradientProps & Omit<LinearGradientProps, 'colors'>) => {
+}: BackgroundGradientProps & Omit<LinearGradientProps, 'colors'>) {
   return (
     <LinearGradient
       style={[styles.gradient, style]}
@@ -24,12 +24,10 @@ const BackgroundGradient = ({
       {children}
     </LinearGradient>
   );
-};
+}
 
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
   },
 });
-
-export default BackgroundGradient;

@@ -4,7 +4,7 @@ import Text from '../../components/Text';
 import Slider from '../../components/slider/Slider';
 import VariantButton from '../../components/Button';
 
-const FiltersModal = () => {
+export default function FiltersModal() {
   const [battery, setBattery] = useState([35, 100]);
   const [distance, setDistance] = useState([0, 750]);
   const [scooters] = useState(0);
@@ -36,7 +36,7 @@ const FiltersModal = () => {
       </VariantButton>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   text: { color: 'white', fontFamily: 'CeraProBold', fontSize: 15 },
@@ -44,5 +44,3 @@ const styles = StyleSheet.create({
   buttonTextStyle: { fontFamily: 'CeraProMedium' },
   scooterCountText: { fontFamily: 'CeraProBold' },
 });
-
-export default FiltersModal;
