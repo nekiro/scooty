@@ -20,6 +20,7 @@ import mapStyle from '../assets/mapStyle';
 import scooters, { ScooterData } from '../lib/scootersRepo';
 import useSplash from '../hooks/useSplash';
 import { StatusBar } from 'expo-status-bar';
+import { getDistance } from 'geolib';
 
 export default function HomeScreen() {
   const { vh } = useDimensions();
@@ -35,6 +36,22 @@ export default function HomeScreen() {
     [],
   );
   const FilterModalComponent = useMemo(() => <FiltersModal />, []);
+  const closestScooter = useMemo(() => {
+    if (!location) return;
+
+    const currentCoordinate = {
+      lat: location.latitude,
+      lng: location.longitude,
+    };
+
+    const sortedScooters = scooters.sort(
+      (a, b) =>
+        getDistance(currentCoordinate, a.coordinate) -
+        getDistance(currentCoordinate, b.coordinate),
+    );
+
+    return sortedScooters[0];
+  }, [location]);
 
   useEffect(() => {
     if (location && mapLoaded) {
@@ -42,21 +59,41 @@ export default function HomeScreen() {
     }
   }, [location, mapLoaded]);
 
+  useEffect(() => {
+    if (!chosenScooter) return;
+    mapRef.current?.animateToRegion(
+      getRegion({ ...chosenScooter.coordinate }),
+      600,
+    );
+  }, [chosenScooter]);
+
   const showFilters = () =>
     dispatch({
       type: 'SET_CONTENT',
       content: FilterModalComponent,
       show: true,
     });
+
   const showMenu = () =>
     dispatch({
       type: 'SET_CONTENT',
       content: MenuModalComponent,
       show: true,
     });
+
   const onArrowPress = () =>
     location && mapRef.current?.animateToRegion(getRegion(location), 600);
-  const onRideButtonPress = () => true; // TODO
+
+  const onRideButtonPress = () => {
+    if (!closestScooter) return;
+    setChosenScooter(closestScooter);
+    dispatch({
+      type: 'SET_CONTENT',
+      content: <ScooterModal scooter={closestScooter} />,
+      show: true,
+    });
+  };
+
   const onHide = () => {
     if (chosenScooter) {
       setChosenScooter(undefined);
@@ -65,12 +102,7 @@ export default function HomeScreen() {
     dispatch({ type: 'HIDE' });
   };
 
-  const onMarkerPress = (
-    event: MapEvent<{
-      action: 'marker-press';
-      id: string;
-    }>,
-  ) => {
+  const onMarkerPress = (event: MapEvent) => {
     const scooter = scooters.find(
       (scooter) => scooter.id === event.nativeEvent.id,
     );
@@ -82,11 +114,6 @@ export default function HomeScreen() {
         content: <ScooterModal scooter={scooter} />,
         show: true,
       });
-
-      mapRef.current?.animateToRegion(
-        getRegion({ ...scooter.coordinate }),
-        600,
-      );
     }
   };
 

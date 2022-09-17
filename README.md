@@ -2,7 +2,7 @@
 
 ### Description
 
-E-scooter renting mobile app similar in functionaliy to the popular ones like Lime or Bolt.
+E-scooter renting mobile app similar in functionality to the popular ones like Lime or Bolt.
 
 ### Stack
 

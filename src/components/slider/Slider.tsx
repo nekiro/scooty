@@ -28,7 +28,6 @@ export default function Slider({
       trackStyle={styles.track}
       thumbTintColor={colors.yellow}
       step={1}
-      onSlidingStart={() => console.log('sliding')}
       renderThumbComponent={() => <SliderThumb />}
       // not compatible with current version
       // check: https://github.com/miblanchard/react-native-slider/pull/363
