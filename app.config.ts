@@ -10,13 +10,7 @@ const config: ExpoConfig = {
   owner: 'nekiro',
   version: '1.0.0',
   orientation: 'portrait',
-  backgroundColor: 'black',
-  // splash: {
-  //   image: 'src/assets/splash.png',
-  //   resizeMode: 'cover',
-  //   backgroundColor: 'black',
-  // },
-  entryPoint: 'src/App.tsx',
+  backgroundColor: '#000000',
   ios: {
     config: {
       googleMapsApiKey: '',
